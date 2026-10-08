@@ -1,0 +1,1814 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Historium</title>
+  <meta name="description" content="Historium: تاریخ کشورها، شخصیت‌های مهم و قدمت ملت‌ها. The history of countries, important figures and the age of nations.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=EB+Garamond:wght@400;500;700&family=IM+Fell+English&family=Noto+Naskh+Arabic:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+/* ==========================================================
+   Historium - stylesheet
+   Theme: old parchment, ink and wax seal
+   Works in both RTL (Persian) and LTR (English) using logical properties
+   ========================================================== */
+
+:root {
+  --parchment: #e8dbbc;
+  --vellum: #f4ecd6;
+  --ink: #2a1c12;
+  --walnut: #5b3b22;
+  --seal: #6f1f1c;
+  --gold: #a27d2f;
+  --line: rgba(91, 59, 34, 0.35);
+  --header-h: 68px;
+  --measure: 68ch;
+}
+
+html[lang="fa"] {
+  --font-display: "Amiri", "Noto Naskh Arabic", "Traditional Arabic", serif;
+  --font-body: "Noto Naskh Arabic", "Amiri", "Traditional Arabic", serif;
+  --lh: 2;
+  --base: 1.1875rem;
+}
+html[lang="en"] {
+  --font-display: "IM Fell English", "EB Garamond", Georgia, "Times New Roman", serif;
+  --font-body: "EB Garamond", Georgia, "Times New Roman", serif;
+  --lh: 1.65;
+  --base: 1.25rem;
+}
+
+* { box-sizing: border-box; }
+
+[hidden] { display: none !important; }
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--base);
+  line-height: var(--lh);
+  background:
+    radial-gradient(ellipse at 50% 0%, #f1e7cc 0%, var(--parchment) 55%, #d6c39a 100%) fixed;
+  display: flex;
+  flex-direction: column;
+}
+
+/* paper grain */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.55;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.36  0 0 0 0 0.25  0 0 0 0 0.12  0 0 0 0.45 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+body > * { position: relative; z-index: 1; }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 0 0 0.5em;
+  color: var(--ink);
+}
+html[lang="en"] h1, html[lang="en"] h2, html[lang="en"] h3, html[lang="en"] h4 { font-weight: 400; }
+
+h1 { font-size: clamp(2rem, 4vw, 3rem); }
+h2 { font-size: clamp(1.5rem, 2.6vw, 2rem); }
+h3 { font-size: 1.3rem; }
+
+p { margin: 0 0 1em; max-width: var(--measure); }
+
+a { color: var(--seal); text-underline-offset: 0.2em; }
+a:hover { color: var(--ink); }
+
+:focus-visible {
+  outline: 3px solid var(--seal);
+  outline-offset: 3px;
+}
+
+.sr-only {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  inset-inline-start: 1rem;
+  top: -4rem;
+  background: var(--vellum);
+  color: var(--ink);
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--seal);
+  z-index: 100;
+}
+.skip-link:focus { top: 0.75rem; }
+
+/* ---------- reading progress ---------- */
+#progress {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: var(--seal);
+  transform: scaleX(0);
+  transform-origin: left;
+  z-index: 60;
+  display: none;
+}
+html[dir="rtl"] #progress { transform-origin: right; }
+body.has-progress #progress { display: block; }
+
+/* ---------- header ---------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  min-height: var(--header-h);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  padding: 0.5rem clamp(1rem, 4vw, 3rem);
+  background: rgba(244, 236, 214, 0.94);
+  border-bottom: 4px double var(--walnut);
+  backdrop-filter: blur(4px);
+}
+
+.logo {
+  font-family: "IM Fell English", "EB Garamond", Georgia, serif;
+  font-size: 1.9rem;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  text-decoration: none;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+.logo:hover { color: var(--seal); }
+
+.main-nav {
+  display: flex;
+  gap: 0.25rem 1.25rem;
+  flex-wrap: wrap;
+  flex: 1;
+}
+.main-nav a {
+  color: var(--walnut);
+  text-decoration: none;
+  padding: 0.25rem 0.1rem;
+  border-bottom: 2px solid transparent;
+}
+.main-nav a:hover { color: var(--ink); border-bottom-color: var(--gold); }
+.main-nav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--seal); font-weight: 700; }
+
+.lang-btn {
+  font: inherit;
+  color: var(--ink);
+  background: var(--vellum);
+  border: 1px solid var(--walnut);
+  padding: 0.2rem 0.9rem;
+  cursor: pointer;
+  border-radius: 2px;
+}
+.lang-btn:hover { background: var(--parchment); }
+
+main { flex: 1; }
+main:focus, main:focus-visible { outline: none; }
+
+.page {
+  width: min(1120px, 100% - 2rem);
+  margin-inline: auto;
+  padding-block: 2.5rem 4rem;
+}
+
+.lead { font-size: 1.15em; color: var(--walnut); }
+
+/* ---------- hero: the scroll ---------- */
+.hero { padding: 2.5rem 1rem 1rem; }
+
+.scroll {
+  width: min(920px, 100%);
+  margin-inline: auto;
+}
+
+.scroll-rod {
+  position: relative;
+  height: 24px;
+  border-radius: 12px;
+  background: linear-gradient(#3a2313, #8a5e37 45%, #3a2313);
+  box-shadow: 0 6px 10px rgba(42, 28, 18, 0.35);
+}
+.scroll-rod::before, .scroll-rod::after {
+  content: "";
+  position: absolute;
+  top: -5px;
+  width: 22px; height: 34px;
+  border-radius: 8px;
+  background: linear-gradient(#2c1a0e, #7b5230 50%, #2c1a0e);
+}
+.scroll-rod::before { inset-inline-start: -14px; }
+.scroll-rod::after { inset-inline-end: -14px; }
+
+.scroll-sheet {
+  margin-inline: 18px;
+  padding: clamp(2.5rem, 7vw, 5rem) clamp(1.25rem, 5vw, 4rem);
+  text-align: center;
+  background:
+    linear-gradient(90deg, rgba(91, 59, 34, 0.28), transparent 7%, transparent 93%, rgba(91, 59, 34, 0.28)),
+    radial-gradient(ellipse at 50% 40%, #f6eed8 0%, #ecdfbf 70%, #dcc89b 100%);
+  box-shadow: inset 0 0 60px rgba(111, 70, 30, 0.25);
+  animation: unroll 1.5s cubic-bezier(0.3, 0.7, 0.2, 1) both;
+}
+@keyframes unroll {
+  from { clip-path: inset(0 0 100% 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll-sheet { animation: none; }
+}
+
+.slogan {
+  font-size: clamp(2.6rem, 8vw, 5.4rem);
+  line-height: 1.15;
+  margin: 0 0 0.25em;
+}
+.slogan-alt {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 3vw, 1.9rem);
+  color: var(--walnut);
+  margin: 0 0 1.25rem;
+}
+.tagline {
+  margin-inline: auto;
+  color: var(--walnut);
+  border-top: 1px solid var(--gold);
+  padding-top: 1rem;
+  display: inline-block;
+}
+
+/* ---------- decorative section title ---------- */
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 3rem 0 1.25rem;
+}
+.section-title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+html[dir="rtl"] .section-title::after { background: linear-gradient(270deg, var(--gold), transparent); }
+.section-title h2 { margin: 0; }
+
+/* ---------- framed boxes (manuscript frame) ---------- */
+.frame {
+  background: var(--vellum);
+  border: 1px solid var(--gold);
+  box-shadow:
+    inset 0 0 0 4px var(--vellum),
+    inset 0 0 0 5px rgba(162, 125, 47, 0.6),
+    0 2px 0 rgba(91, 59, 34, 0.25);
+  border-radius: 2px;
+}
+
+/* ---------- entry cards on home ---------- */
+.entry-grid {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+.entry {
+  display: block;
+  padding: 2rem 1.75rem;
+  text-decoration: none;
+  color: var(--ink);
+}
+.entry:hover { background: #f9f2de; color: var(--ink); }
+.entry h3 { margin-top: 0.75rem; }
+.entry p { color: var(--walnut); margin: 0; }
+.entry svg { width: 44px; height: 44px; stroke: var(--seal); fill: none; stroke-width: 1.6; }
+
+/* ---------- today / latest ---------- */
+.today { padding: 1.75rem; }
+.today h3 { margin-bottom: 0.25rem; }
+.today .date { color: var(--seal); font-weight: 700; margin-bottom: 0.5rem; }
+.today .note { color: var(--walnut); font-size: 0.9em; margin-bottom: 1rem; }
+
+.latest-list { list-style: none; margin: 0; padding: 0; }
+.latest-list li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px dashed var(--line);
+}
+.latest-list .kind { color: var(--walnut); min-width: 5em; }
+.latest-list .when { margin-inline-start: auto; color: var(--walnut); font-size: 0.9em; }
+
+/* ---------- flags ---------- */
+.flag {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgba(42, 28, 18, 0.5);
+}
+.flag-img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* ---------- search ---------- */
+.searchbar { margin: 1.5rem 0 2rem; max-width: 460px; }
+.searchbar input,
+.filters select {
+  width: 100%;
+  font: inherit;
+  color: var(--ink);
+  background: var(--vellum);
+  border: 1px solid var(--walnut);
+  border-radius: 2px;
+  padding: 0.6rem 0.9rem;
+}
+
+/* ---------- country cards ---------- */
+.card-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+.country-card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: var(--ink);
+  overflow: hidden;
+}
+.country-card:hover { background: #f9f2de; color: var(--ink); }
+.country-card .flag-band { height: 84px; margin: 10px 10px 0; }
+.country-card .body { padding: 1rem 1.25rem 1.4rem; }
+.country-card h3 { margin-bottom: 0.1em; }
+.country-card .age { color: var(--seal); font-weight: 700; margin-bottom: 0.4rem; }
+.country-card .sum { color: var(--walnut); font-size: 0.92em; line-height: 1.6; margin: 0; }
+
+.empty {
+  padding: 2rem;
+  text-align: center;
+  color: var(--walnut);
+  border: 1px dashed var(--walnut);
+}
+
+/* ---------- country page ---------- */
+.crumb { margin-bottom: 1.5rem; }
+.country-head {
+  display: grid;
+  grid-template-columns: 160px 1fr auto;
+  gap: 1.5rem 2rem;
+  align-items: center;
+  margin-bottom: 2.5rem;
+}
+.country-head .flag-big { width: 160px; height: 108px; }
+.country-head h1 { margin: 0; }
+
+.seal {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 128px; height: 128px;
+  border-radius: 50%;
+  text-decoration: none;
+  color: #f4ecd6;
+  background: radial-gradient(circle at 35% 30%, #9a3a33, var(--seal) 60%, #4b1311);
+  box-shadow: inset 0 0 0 5px rgba(244, 236, 214, 0.18), 0 4px 10px rgba(42, 28, 18, 0.4);
+  text-align: center;
+  line-height: 1.25;
+}
+.seal:hover { color: #fff; filter: brightness(1.1); }
+.seal .n { font-family: var(--font-display); font-size: 2.1rem; }
+.seal .u { font-size: 0.85rem; }
+
+.country-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 270px;
+  gap: 3rem;
+  align-items: start;
+}
+.country-main section { scroll-margin-top: calc(var(--header-h) + 1.25rem); margin-bottom: 3rem; }
+.country-main section > h2 {
+  border-bottom: 1px solid var(--gold);
+  padding-bottom: 0.3em;
+}
+
+.side { position: sticky; top: calc(var(--header-h) + 1.25rem); display: grid; gap: 1.25rem; }
+.side .box { padding: 1.25rem 1.4rem; }
+.side h2 { font-size: 1.2rem; margin-bottom: 0.6rem; }
+.facts { margin: 0; }
+.facts div { padding: 0.4rem 0; border-bottom: 1px dashed var(--line); }
+.facts div:last-child { border-bottom: 0; }
+.facts dt { color: var(--walnut); font-size: 0.85em; }
+.facts dd { margin: 0; font-weight: 700; }
+
+.toc { list-style: none; margin: 0; padding: 0; }
+.toc li { margin: 0; }
+.toc a {
+  display: block;
+  padding: 0.25rem 0;
+  color: var(--walnut);
+  text-decoration: none;
+  line-height: 1.5;
+}
+.toc a:hover { color: var(--seal); }
+
+.why-date {
+  margin-top: 1rem;
+  padding: 0.9rem 1.1rem;
+  border-inline-start: 3px solid var(--gold);
+  background: rgba(244, 236, 214, 0.6);
+  font-size: 0.95em;
+}
+.why-date p { margin: 0; }
+
+/* timeline */
+.timeline { list-style: none; margin: 0; padding: 0; border-inline-start: 2px solid var(--walnut); margin-inline-start: 0.6rem; }
+.timeline > li { position: relative; padding-inline-start: 1.5rem; margin-bottom: 0.25rem; }
+.timeline > li::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: -0.62rem;
+  top: 0.8rem;
+  width: 0.9rem; height: 0.9rem;
+  border-radius: 50%;
+  background: var(--parchment);
+  border: 2px solid var(--seal);
+}
+.timeline details { border-bottom: 1px dashed var(--line); padding: 0.4rem 0; }
+.timeline summary {
+  cursor: pointer;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 1rem;
+  align-items: baseline;
+  list-style: none;
+  padding: 0.2rem 0;
+}
+.timeline summary::-webkit-details-marker { display: none; }
+.timeline summary:hover .t-title { color: var(--seal); }
+.timeline .t-year { font-family: var(--font-display); font-weight: 700; font-size: 1.15em; color: var(--seal); min-width: 5.5em; }
+.timeline .t-title { font-weight: 700; }
+.timeline .t-text { margin: 0.4rem 0 0.4rem; color: var(--walnut); }
+.timeline summary::after {
+  content: "+";
+  margin-inline-start: auto;
+  color: var(--walnut);
+  font-size: 1.3em;
+  line-height: 1;
+}
+.timeline details[open] summary::after { content: "\2212"; }
+
+/* mini cards for figures */
+.mini-grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+.fig-card {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem 1.1rem;
+  text-decoration: none;
+  color: var(--ink);
+}
+.fig-card:hover { background: #f9f2de; color: var(--ink); }
+.fig-card .nm { font-weight: 700; line-height: 1.35; }
+.fig-card .yr { color: var(--walnut); font-size: 0.88em; }
+.fig-card .kn { color: var(--walnut); font-size: 0.88em; line-height: 1.5; }
+
+.mono {
+  flex: none;
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  color: var(--vellum);
+  background: radial-gradient(circle at 35% 30%, #7a5231, var(--walnut) 65%, #35200f);
+  overflow: hidden;
+}
+.mono img { width: 100%; height: 100%; object-fit: cover; }
+.mono.big { width: 120px; height: 120px; font-size: 3.4rem; }
+
+/* gallery */
+.gallery { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }
+.gallery figure { margin: 0; padding: 0.6rem; }
+.gallery img { width: 100%; height: 170px; object-fit: cover; display: block; }
+.gallery figcaption { font-size: 0.88em; color: var(--walnut); padding-top: 0.4rem; line-height: 1.5; }
+
+.pager {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  border-top: 4px double var(--walnut);
+  padding-top: 1.5rem;
+  margin-top: 1rem;
+}
+.pager a { text-decoration: none; padding: 0.5rem 0; }
+.pager small { display: block; color: var(--walnut); }
+
+/* ---------- figures page ---------- */
+.filters {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  align-items: end;
+  margin: 1.5rem 0;
+}
+.filters label { display: block; color: var(--walnut); font-size: 0.9em; margin-bottom: 0.25rem; }
+.btn {
+  font: inherit;
+  color: var(--vellum);
+  background: var(--seal);
+  border: 1px solid #4b1311;
+  border-radius: 2px;
+  padding: 0.6rem 1.1rem;
+  cursor: pointer;
+}
+.btn:hover { background: #4b1311; }
+
+.era-nav {
+  position: sticky;
+  top: var(--header-h);
+  z-index: 10;
+  display: flex;
+  gap: 0.25rem 1.25rem;
+  flex-wrap: wrap;
+  padding: 0.6rem 1rem;
+  margin-bottom: 1.5rem;
+  background: rgba(244, 236, 214, 0.95);
+  border-block: 1px solid var(--gold);
+}
+.era-nav a { color: var(--walnut); text-decoration: none; padding: 0.1rem 0; border-bottom: 2px solid transparent; }
+.era-nav a:hover { color: var(--ink); border-bottom-color: var(--seal); }
+
+.era { scroll-margin-top: calc(var(--header-h) + 4rem); margin-bottom: 2.5rem; }
+.era-banner {
+  padding: 1.1rem 1.5rem;
+  margin-bottom: 1rem;
+  border-inline-start: 8px solid var(--era, var(--gold));
+  background: rgba(244, 236, 214, 0.75);
+}
+.era-banner h2 { margin: 0; }
+.era-banner .range { color: var(--walnut); font-size: 0.92em; }
+.era-banner p { margin: 0.3rem 0 0; color: var(--walnut); font-size: 0.95em; }
+
+/* ---------- figure page ---------- */
+.fig-head { display: flex; gap: 2rem; align-items: center; flex-wrap: wrap; margin-bottom: 2rem; }
+.fig-head h1 { margin-bottom: 0.1em; }
+.fig-head .meta { color: var(--walnut); }
+.fig-body { max-width: var(--measure); }
+.fig-body h2 { border-bottom: 1px solid var(--gold); padding-bottom: 0.3em; margin-top: 2rem; }
+.fig-body ul { padding-inline-start: 1.4rem; }
+.fig-body li { margin-bottom: 0.4rem; }
+blockquote.quote {
+  margin: 1.5rem 0;
+  padding: 0.5rem 1.25rem;
+  border-inline-start: 4px solid var(--seal);
+  font-family: var(--font-display);
+  font-size: 1.3em;
+}
+
+/* ---------- ages timeline ---------- */
+.ages-scroller {
+  overflow-x: auto;
+  padding: 1rem 0.5rem 2rem;
+  margin-top: 1.5rem;
+}
+.ages-track {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  position: relative;
+  min-width: max-content;
+  padding-top: 4rem;
+}
+.ages-track::before {
+  content: "";
+  position: absolute;
+  top: 3.05rem;
+  inset-inline: 0;
+  height: 4px;
+  background: var(--walnut);
+}
+.age-item { width: 250px; position: relative; }
+.age-item .yr {
+  position: absolute;
+  top: -3.3rem;
+  inset-inline-start: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: var(--seal);
+  line-height: 1.2;
+}
+.age-item .dot {
+  position: absolute;
+  top: -1.45rem;
+  inset-inline-start: 0;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--seal);
+  border: 3px solid var(--parchment);
+  box-shadow: 0 0 0 1px var(--walnut);
+}
+.age-card { padding: 1.25rem 1.25rem 1.25rem; }
+.age-card h3 { margin-bottom: 0.15em; }
+.age-card .big-n { font-family: var(--font-display); font-size: 1.6rem; color: var(--seal); line-height: 1.3; }
+.age-card details { margin-top: 0.75rem; font-size: 0.92em; color: var(--walnut); }
+.age-card summary { cursor: pointer; color: var(--seal); }
+.age-card details p { margin: 0.5rem 0 0; line-height: 1.7; }
+.hint { color: var(--walnut); font-size: 0.92em; }
+
+/* ---------- footer ---------- */
+.site-footer {
+  margin-top: 2rem;
+  padding: 1.75rem 1rem;
+  text-align: center;
+  color: var(--walnut);
+  border-top: 4px double var(--walnut);
+  background: rgba(244, 236, 214, 0.7);
+  font-size: 0.95rem;
+}
+.site-footer p { margin: 0 auto; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 960px) {
+  .country-layout { grid-template-columns: 1fr; }
+  .side { position: static; order: -1; }
+  .country-head { grid-template-columns: 120px 1fr; }
+  .country-head .flag-big { width: 120px; height: 82px; }
+  .country-head .seal { grid-column: 1 / -1; justify-self: start; }
+}
+@media (max-width: 560px) {
+  .site-header { gap: 0.25rem 1rem; }
+  .main-nav { order: 3; flex-basis: 100%; }
+  :root { --header-h: 0px; }
+  .site-header { position: static; }
+  .scroll-sheet { margin-inline: 12px; }
+  .era-nav { position: static; }
+}
+
+</style>
+</head>
+<body>
+  <a class="skip-link" id="skip-link" href="#app"></a>
+  <div id="progress" aria-hidden="true"></div>
+  <header class="site-header" id="site-header"></header>
+  <main id="app" tabindex="-1">
+    <noscript><p style="padding:2rem">این سایت برای نمایش به جاوااسکریپت نیاز دارد. This site needs JavaScript to display.</p></noscript>
+  </main>
+  <footer class="site-footer" id="site-footer"></footer>
+
+  <script>
+/* ==========================================================
+   Historium - interface texts (menus, buttons, headings)
+   متن‌های ظاهر سایت (منو، دکمه‌ها، عنوان‌ها)
+   Each text has a Persian (fa) and an English (en) version.
+   برای تغییر شعار یا متن معرفی همین‌جا را ویرایش کنید.
+   ========================================================== */
+
+window.HISTORIUM_STRINGS = {
+  /* ---- header ---- */
+  navHome:      { fa: "صفحه‌ی اصلی",       en: "Home" },
+  navCountries: { fa: "تاریخ کشورها",       en: "Countries" },
+  navFigures:   { fa: "شخصیت‌های مهم",      en: "Important figures" },
+  navAges:      { fa: "قدمت کشورها",        en: "Age of countries" },
+  langSwitch:   { fa: "English",            en: "فارسی" },
+  langSwitchLabel: { fa: "Switch to English", en: "تغییر زبان به فارسی" },
+  skip:         { fa: "پرش به محتوا",       en: "Skip to content" },
+
+  /* ---- home ---- */
+  slogan:       { fa: "چشم‌هایتان را باز کنید", en: "Open Your Eyes" },
+  tagline:      { fa: "به تاریخ جهان سفر کنید", en: "Journey through the history of the world" },
+  intro: {
+    fa: "هیستوریوم جایی برای خواندن تاریخ کشورها، شناخت شخصیت‌های تأثیرگذار و دیدن قدمت ملت‌هاست. کشورها را یکی‌یکی ورق بزنید، از شخصیت‌ها بخوانید و از عصری به عصر دیگر بروید.",
+    en: "Historium is a place to read the history of countries, meet the people who shaped it, and see how old nations really are. Turn the pages country by country, read about key figures, and travel from one era to the next."
+  },
+  introTitle:   { fa: "درباره‌ی هیستوریوم", en: "About Historium" },
+
+  cardCountriesTitle: { fa: "تاریخ کشورها", en: "History of countries" },
+  cardCountriesText:  { fa: "برای هر کشور، معرفی، خط زمانی و تاریخ کامل بخوانید.", en: "Read an overview, a timeline and the full history of each country." },
+  cardFiguresTitle:   { fa: "شخصیت‌های مهم", en: "Important figures" },
+  cardFiguresText:    { fa: "از عصر باستان تا امروز، به ترتیب دوره‌های تاریخی.", en: "From the ancient world to today, arranged by historical era." },
+  cardAgesTitle:      { fa: "قدمت کشورها", en: "Age of countries" },
+  cardAgesText:       { fa: "ببینید هر کشور از چه سالی آغاز شده است.", en: "See the year each country began." },
+
+  todayTitle:   { fa: "این روز در تاریخ", en: "This day in history" },
+  todayExact:   { fa: "رویدادی که در چنین روزی رخ داده است", en: "Something that happened on this date" },
+  todayNext:    { fa: "امروز رویداد ثبت‌شده‌ای نداریم. نزدیک‌ترین تاریخ بعدی در تقویم:", en: "Nothing is recorded for today. The next date on the calendar:" },
+  readMore:     { fa: "خواندن تاریخ این کشور", en: "Read this country's history" },
+
+  latestTitle:  { fa: "آخرین مطالب اضافه‌شده", en: "Recently added" },
+  typeCountry:  { fa: "کشور", en: "Country" },
+  typeFigure:   { fa: "شخصیت", en: "Figure" },
+
+  /* ---- countries ---- */
+  countriesTitle: { fa: "تاریخ کشورها", en: "History of countries" },
+  countriesLead:  { fa: "کشوری را انتخاب کنید و تاریخش را بخوانید.", en: "Choose a country and read its history." },
+  searchLabel:    { fa: "جستجوی کشور", en: "Search countries" },
+  searchPlaceholder: { fa: "نام کشور را بنویسید...", en: "Type a country name..." },
+  noResults:      { fa: "کشوری با این نام پیدا نشد.", en: "No country matches that name." },
+  ageText:        { fa: "{n} سال قدمت", en: "{n} years old" },
+  ageSealUnit:    { fa: "سال قدمت", en: "years old" },
+
+  /* ---- country page ---- */
+  backToCountries: { fa: "بازگشت به لیست کشورها", en: "Back to all countries" },
+  quickFacts:     { fa: "اطلاعات سریع", en: "Quick facts" },
+  factFounded:    { fa: "سال آغاز", en: "Beginning" },
+  factCapital:    { fa: "پایتخت", en: "Capital" },
+  factLanguage:   { fa: "زبان", en: "Language" },
+  factPopulation: { fa: "جمعیت", en: "Population" },
+  toc:            { fa: "فهرست مطالب", en: "Contents" },
+  overviewTitle:  { fa: "معرفی", en: "Overview" },
+  timelineTitle:  { fa: "خط زمانی", en: "Timeline" },
+  timelineHint:   { fa: "روی هر رویداد کلیک کنید تا توضیحش باز شود.", en: "Select an event to open its description." },
+  figuresOfCountry: { fa: "شخصیت‌های مهم این کشور", en: "Important figures from this country" },
+  galleryTitle:   { fa: "گالری تصاویر", en: "Gallery" },
+  whyDate:        { fa: "چرا این سال؟", en: "Why this year?" },
+  prevCountry:    { fa: "کشور قبلی", en: "Previous country" },
+  nextCountry:    { fa: "کشور بعدی", en: "Next country" },
+  ageBadgeLabel:  { fa: "دیدن قدمت همه‌ی کشورها", en: "See the age of all countries" },
+
+  /* ---- figures ---- */
+  figuresTitle:   { fa: "شخصیت‌های مهم تاریخ", en: "Important figures in history" },
+  figuresLead:    { fa: "شخصیت‌ها به ترتیب عصرهای تاریخی چیده شده‌اند. با فیلترها دنبال کشور یا حوزه‌ی خاصی بگردید.", en: "Figures are arranged by historical era. Use the filters to look for a particular country or field." },
+  filterCountry:  { fa: "کشور", en: "Country" },
+  filterField:    { fa: "حوزه", en: "Field" },
+  all:            { fa: "همه", en: "All" },
+  randomFigure:   { fa: "یک شخصیت تصادفی", en: "A random figure" },
+  noFigures:      { fa: "شخصیتی با این فیلترها پیدا نشد.", en: "No figures match these filters." },
+  eraNav:         { fa: "عصرهای تاریخی", en: "Historical eras" },
+  bornPrefix:     { fa: "متولد", en: "Born" },
+  bce:            { fa: "پ.م.", en: "BCE" },
+  achievements:   { fa: "دستاوردها", en: "Achievements" },
+  biography:      { fa: "زندگی‌نامه", en: "Biography" },
+  famousQuote:    { fa: "جمله‌ی معروف", en: "Famous quote" },
+  contemporaries: { fa: "هم‌عصرها", en: "Contemporaries" },
+  backToFigures:  { fa: "بازگشت به شخصیت‌های مهم", en: "Back to important figures" },
+  fromCountry:    { fa: "کشور", en: "Country" },
+  fieldLabel:     { fa: "حوزه", en: "Field" },
+  eraLabel:       { fa: "عصر", en: "Era" },
+
+  /* ---- ages ---- */
+  agesTitle:      { fa: "قدمت کشورها", en: "Age of countries" },
+  agesLead:       { fa: "هر کشور از چه سالی آغاز شده است؟ کشورها از قدیمی‌ترین تا جدیدترین روی محور زمان چیده شده‌اند.", en: "When did each country begin? Countries are placed on a timeline from the oldest to the newest." },
+  agesHint:       { fa: "برای دیدن بقیه، محور را به کنار بکشید.", en: "Scroll sideways to see the rest." },
+
+  /* ---- misc ---- */
+  notFoundTitle:  { fa: "صفحه پیدا نشد", en: "Page not found" },
+  notFoundText:   { fa: "این آدرس وجود ندارد. به صفحه‌ی اصلی برگردید و از منو ادامه دهید.", en: "This address does not exist. Go back to the home page and continue from the menu." },
+  footerText:     { fa: "ساخته شده توسط مبین قلی پور", en: "Creator Mobin Gholipour" },
+  footerLove:     { fa: "Made with my love Whity", en: "Made with my love Whity" },
+
+  months: {
+    fa: ["ژانویه", "فوریه", "مارس", "آوریل", "مه", "ژوئن", "ژوئیه", "اوت", "سپتامبر", "اکتبر", "نوامبر", "دسامبر"],
+    en: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+  }
+};
+
+</script>
+  <script>
+/* ==========================================================
+   Historium - CONTENT FILE  |  فایل محتوای سایت
+   ----------------------------------------------------------
+   این تنها فایلی است که برای افزودن مطلب باید ویرایش کنید.
+   This is the only file you need to edit to add content.
+
+   HOW TO ADD A COUNTRY / چطور کشور اضافه کنم؟
+   1. Find the block that starts with   id: "germany"
+   2. Copy the whole block from "{" to the matching "}," 
+   3. Paste it right below, and change the texts.
+   4. The id must be unique, in lowercase English letters (e.g. "italy").
+   5. Every text has two versions: fa (Persian) and en (English).
+   6. Save the file and refresh the page. The country card, the page,
+      the timeline and the age timeline are all created automatically.
+
+   HOW TO ADD A FIGURE / چطور شخصیت اضافه کنم؟
+   Copy one block inside "figures", paste it, change the texts.
+   - country: the id of an existing country (e.g. "germany")
+   - born / died: years only (use a negative number for BCE, e.g. -356)
+   - the era is chosen automatically from the birth year,
+     unless you add   era: "modern"   to the block.
+   - field must be one of: politics, science, arts, thought, invention
+
+   PARAGRAPHS: text is written as a list of paragraphs: ["first", "second"]
+   Keep the commas and the quotation marks exactly as in the examples.
+   If you use a quotation mark inside a text, write it as ‘ ’ or « ».
+   ========================================================== */
+
+window.HISTORIUM_DATA = {
+
+  /* ---------- historical eras / عصرهای تاریخی ---------- */
+  eras: [
+    { id: "ancient", from: -100000, to: 499, color: "#8a6d3b",
+      name: { fa: "عصر باستان", en: "Ancient era" },
+      desc: { fa: "از آغاز تمدن‌ها تا سقوط امپراتوری روم غربی.", en: "From the first civilizations to the fall of the Western Roman Empire." } },
+    { id: "medieval", from: 500, to: 1399, color: "#5b3b22",
+      name: { fa: "قرون وسطی", en: "Middle Ages" },
+      desc: { fa: "از سال ۵۰۰ تا حدود ۱۴۰۰ میلادی.", en: "From about 500 to about 1400 CE." } },
+    { id: "renaissance", from: 1400, to: 1599, color: "#7a3b2e",
+      name: { fa: "رنسانس", en: "Renaissance" },
+      desc: { fa: "دوران بازگشت به دانش و هنر، چاپ و اصلاحات دینی.", en: "An age of revived learning and art, of printing and religious reform." } },
+    { id: "enlightenment", from: 1600, to: 1799, color: "#3e5c55",
+      name: { fa: "روشنگری", en: "Enlightenment" },
+      desc: { fa: "قرن‌های هفدهم و هجدهم؛ عصر خرد، علم و فلسفه.", en: "The seventeenth and eighteenth centuries: an age of reason, science and philosophy." } },
+    { id: "modern", from: 1800, to: 1944, color: "#4a4a6a",
+      name: { fa: "دوران مدرن", en: "Modern era" },
+      desc: { fa: "از انقلاب صنعتی تا پایان جنگ جهانی دوم.", en: "From the Industrial Revolution to the end of the Second World War." } },
+    { id: "contemporary", from: 1945, to: 100000, color: "#6f1f1c",
+      name: { fa: "دوران معاصر", en: "Contemporary era" },
+      desc: { fa: "از سال ۱۹۴۵ تا امروز.", en: "From 1945 to today." } }
+  ],
+
+  /* ---------- fields / حوزه‌ها ---------- */
+  fields: {
+    politics:  { fa: "سیاست و حکومت",   en: "Politics and rule" },
+    science:   { fa: "علم",              en: "Science" },
+    arts:      { fa: "هنر و ادبیات",     en: "Arts and letters" },
+    thought:   { fa: "اندیشه و دین",     en: "Thought and faith" },
+    invention: { fa: "اختراع و فناوری",  en: "Invention and technology" }
+  },
+
+  /* ==========================================================
+     COUNTRIES / کشورها
+     ========================================================== */
+  countries: [
+
+    {
+      id: "germany",
+      name: { fa: "آلمان", en: "Germany" },
+      /* flag: stripe colours from top to bottom. For vertical stripes add: flagDirection: "vertical"
+         Or use a picture instead:  flagImage: "images/germany-flag.png" */
+      flag: ["#000000", "#DD0000", "#FFCE00"],
+      founded: 843,
+      foundedNote: {
+        fa: "قدمت آلمان در این سایت از سال ۸۴۳ میلادی حساب شده است؛ سالی که پیمان وردون امپراتوری کارولنژی را میان سه وارث تقسیم کرد و بخش شرقی آن به لویی ژرمنی رسید؛ این بخش بعدها هسته‌ی آلمان شد. «آغاز» یک کشور تعریف واحدی ندارد و تاریخ‌های دیگری مثل ۹۶۲ (امپراتوری مقدس روم)، ۱۸۷۱ (اتحاد آلمان) و ۱۹۹۰ (اتحاد دوباره) هم پیشنهاد می‌شوند.",
+        en: "On this site Germany’s age is counted from 843 CE, the year the Treaty of Verdun divided the Carolingian Empire among three heirs; its eastern part (East Francia) gradually became the core of Germany. The ‘beginning’ of a country has no single definition, and other dates such as 962 (the Holy Roman Empire), 1871 (unification) and 1990 (reunification) are also proposed."
+      },
+      summary: {
+        fa: "کشوری در قلب اروپا با تاریخی از قبایل ژرمن و امپراتوری مقدس روم تا اتحاد دوباره.",
+        en: "A country in the heart of Europe, with a history from Germanic tribes and the Holy Roman Empire to reunification."
+      },
+      facts: {
+        capital:    { fa: "برلین", en: "Berlin" },
+        language:   { fa: "آلمانی", en: "German" },
+        population: { fa: "حدود ۸۴ میلیون نفر", en: "About 84 million" }
+      },
+      overview: {
+        fa: [
+          "آلمان کشوری در قلب اروپاست. تاریخ آن از قبایل ژرمن و امپراتوری فرانک‌ها آغاز می‌شود، قرن‌ها در قالب امپراتوری مقدس روم و صدها قلمرو کوچک و بزرگ ادامه می‌یابد و در سال ۱۸۷۱ به یک دولت واحد می‌رسد.",
+          "قرن بیستم برای آلمان دوره‌ی شکست در جنگ جهانی اول، حکومت نازی‌ها و جنگ جهانی دوم، تقسیم کشور به دو دولت و سرانجام اتحاد دوباره در سال ۱۹۹۰ بود."
+        ],
+        en: [
+          "Germany lies in the heart of Europe. Its history begins with Germanic tribes and the Frankish realm, runs for centuries through the Holy Roman Empire and hundreds of small and large territories, and reaches a single state in 1871.",
+          "The twentieth century brought defeat in the First World War, Nazi rule and the Second World War, the division of the country into two states, and finally reunification in 1990."
+        ]
+      },
+      sections: [
+        {
+          id: "origins",
+          title: { fa: "ریشه‌ها: ژرمن‌ها و روم", en: "Roots: the Germanic tribes and Rome" },
+          text: {
+            fa: [
+              "رومی‌ها قبایلی را که در شرق رود راین و شمال رود دانوب زندگی می‌کردند «ژرمن» می‌نامیدند. این قبایل یک ملت یکپارچه نبودند و هر کدام رهبران و سرزمین خودشان را داشتند.",
+              "در سال ۹ میلادی ائتلافی از این قبایل به رهبری آرمینیوس در جنگل توتوبورگ سه لژیون رومی را نابود کرد. پس از آن روم نتوانست بیشتر سرزمین‌های شرق راین را به‌طور پایدار تصرف کند و این رود سال‌ها مرز اصلی میان دنیای رومی و دنیای ژرمنی ماند."
+            ],
+            en: [
+              "The Romans used the name ‘Germani’ for the tribes living east of the Rhine and north of the Danube. These tribes were not a single people; each had its own leaders and land.",
+              "In 9 CE a coalition of tribes led by Arminius destroyed three Roman legions in the Teutoburg Forest. After that Rome never managed to take most of the land east of the Rhine permanently, and the river remained the main border between the Roman and Germanic worlds for years."
+            ]
+          }
+        },
+        {
+          id: "empire",
+          title: { fa: "از فرانک‌ها تا امپراتوری مقدس روم", en: "From the Franks to the Holy Roman Empire" },
+          text: {
+            fa: [
+              "پس از سقوط روم غربی، فرانک‌ها قدرتمندترین قدرت غرب اروپا شدند. شارلمانی، پادشاه فرانک‌ها، در سال ۸۰۰ در رم امپراتور شد. پس از مرگ او و جانشینش، در سال ۸۴۳ پیمان وردون امپراتوری را میان سه وارث تقسیم کرد و بخش شرقی آن به لویی ژرمنی رسید؛ این بخش بعدها هسته‌ی آلمان شد.",
+              "در سال ۹۶۲ اتو اول در رم تاج امپراتوری گرفت و این تاریخ را آغاز امپراتوری مقدس روم می‌دانند، امپراتوری‌ای که تا ۱۸۰۶ دوام آورد. این امپراتوری دولتی یکپارچه نبود؛ مجموعه‌ای سست از شاهزاده‌نشین‌ها، دوک‌نشین‌ها و شهرهای آزاد بود. فرمان زرین ۱۳۵۶ مشخص کرد که امپراتور را هفت شاهزاده‌ی انتخاب‌کننده برمی‌گزینند."
+            ],
+            en: [
+              "After the fall of the Western Roman Empire the Franks became the strongest power in western Europe. Charlemagne, king of the Franks, was crowned emperor in Rome in 800. After his death and that of his successor, the Treaty of Verdun in 843 divided the empire among three heirs, and its eastern part went to Louis the German; this part later became the core of Germany.",
+              "In 962 Otto I was crowned emperor in Rome, and this date is traditionally seen as the beginning of the Holy Roman Empire, which lasted until 1806. It was not a unified state but a loose collection of principalities, duchies and free cities. The Golden Bull of 1356 fixed that the emperor would be chosen by seven prince-electors."
+            ]
+          }
+        },
+        {
+          id: "reformation",
+          title: { fa: "اصلاحات دینی و جنگ سی‌ساله", en: "The Reformation and the Thirty Years’ War" },
+          text: {
+            fa: [
+              "بنا بر روایت سنتی، مارتین لوتر در ۳۱ اکتبر ۱۵۱۷ نود و پنج تز خود را درباره‌ی فروش آمرزش‌نامه‌ها اعلام کرد. این اعتراض به جنبش اصلاحات دینی تبدیل شد و مسیحیت غربی را به کاتولیک و پروتستان تقسیم کرد. صلح آگسبورگ در ۱۵۵۵ به شاهزادگان آلمانی اجازه داد مذهب لوتری یا کاتولیک را برای قلمرو خود برگزینند.",
+              "اختلاف‌های مذهبی و سیاسی سرانجام به جنگ سی‌ساله (۱۶۱۸ تا ۱۶۴۸) رسید؛ جنگی که بخش‌های بزرگی از سرزمین‌های آلمانی را ویران کرد و با صلح وستفالی پایان یافت."
+            ],
+            en: [
+              "According to tradition, Martin Luther announced his Ninety-five Theses on the sale of indulgences on 31 October 1517. The protest grew into the Reformation and split Western Christianity into Catholic and Protestant churches. The Peace of Augsburg in 1555 allowed German princes to choose Lutheranism or Catholicism for their own territory.",
+              "Religious and political conflict finally led to the Thirty Years’ War (1618 to 1648), which devastated large parts of the German lands and ended with the Peace of Westphalia."
+            ]
+          }
+        },
+        {
+          id: "unification",
+          title: { fa: "راه اتحاد و امپراتوری آلمان", en: "The road to unification and the German Empire" },
+          text: {
+            fa: [
+              "در سال ۱۸۰۶، در جریان جنگ‌های ناپلئون، امپراتوری مقدس روم منحل شد. کنگره‌ی وین در ۱۸۱۵ کنفدراسیون آلمان را شامل ۳۹ دولت ساخت. در انقلاب‌های ۱۸۴۸ مجلس فرانکفورت برای ساختن آلمانی متحد و مشروطه تشکیل شد، اما به نتیجه نرسید.",
+              "سرانجام پروس به رهبری اتو فون بیسمارک در جنگ‌هایی علیه دانمارک (۱۸۶۴)، اتریش (۱۸۶۶) و فرانسه (۱۸۷۰ تا ۱۸۷۱) پیروز شد. در ۱۸ ژانویه‌ی ۱۸۷۱ در تالار آینه‌ی کاخ ورسای، ویلهلم اول امپراتور آلمان اعلام شد. آلمان در دهه‌های بعد به سرعت صنعتی شد."
+            ],
+            en: [
+              "In 1806, during the Napoleonic Wars, the Holy Roman Empire was dissolved. The Congress of Vienna created the German Confederation of 39 states in 1815. During the revolutions of 1848 the Frankfurt Parliament met to build a united, constitutional Germany, but did not succeed.",
+              "In the end Prussia, led by Otto von Bismarck, won wars against Denmark (1864), Austria (1866) and France (1870 to 1871). On 18 January 1871, in the Hall of Mirrors at Versailles, Wilhelm I was proclaimed German Emperor. In the following decades Germany industrialized rapidly."
+            ]
+          }
+        },
+        {
+          id: "ww1",
+          title: { fa: "جنگ جهانی اول و جمهوری وایمار", en: "The First World War and the Weimar Republic" },
+          text: {
+            fa: [
+              "آلمان در جنگ جهانی اول (۱۹۱۴ تا ۱۹۱۸) در کنار اتریش-مجارستان جنگید و شکست خورد. در نوامبر ۱۹۱۸ ویلهلم دوم کناره‌گیری کرد و جمهوری اعلام شد. معاهده‌ی ورسای در ۱۹۱۹ بخشی از خاک آلمان را از آن گرفت، ارتش آن را محدود کرد و غرامت بر آن تحمیل کرد.",
+              "جمهوری وایمار (۱۹۱۹ تا ۱۹۳۳) نخستین دموکراسی پایدار آلمان در نظر گرفته می‌شود و دوره‌ای پرشور در هنر و فرهنگ بود. اما ابرتورم ۱۹۲۳ و بحران بزرگ اقتصادی پس از ۱۹۲۹ آن را به‌شدت تضعیف کرد."
+            ],
+            en: [
+              "Germany fought in the First World War (1914 to 1918) alongside Austria-Hungary and was defeated. In November 1918 Wilhelm II abdicated and a republic was proclaimed. The Treaty of Versailles in 1919 took away part of German territory, limited its army and imposed reparations.",
+              "The Weimar Republic (1919 to 1933) is regarded as Germany’s first lasting democracy, and it was a lively period in art and culture. But the hyperinflation of 1923 and the Great Depression after 1929 weakened it badly."
+            ]
+          }
+        },
+        {
+          id: "nazi",
+          title: { fa: "دوره‌ی نازی‌ها و جنگ جهانی دوم", en: "The Nazi era and the Second World War" },
+          text: {
+            fa: [
+              "در ۳۰ ژانویه‌ی ۱۹۳۳ آدولف هیتلر، رهبر حزب نازی، به صدراعظمی منصوب شد. در ماه‌های بعد حکومت دموکراتیک برچیده شد و دیکتاتوری تک‌حزبی برقرار شد. رژیم نازی یهودیان و دیگر گروه‌ها را تحت پیگرد قرار داد؛ قوانین نورنبرگ (۱۹۳۵) حقوق یهودیان را سلب کرد و در شب بلورین (۹ و ۱۰ نوامبر ۱۹۳۸) به یهودیان، کنیسه‌ها و مغازه‌هایشان در سراسر کشور حمله شد.",
+              "جنگ جهانی دوم با حمله‌ی آلمان به لهستان در اول سپتامبر ۱۹۳۹ آغاز شد. در دل این جنگ، رژیم نازی و همدستانش حدود شش میلیون یهودی را کشتند و میلیون‌ها نفر دیگر، از جمله رومی‌ها، معلولان، اسیران جنگی شوروی و مخالفان سیاسی، نیز قربانی شدند.",
+              "هیتلر در ۳۰ آوریل ۱۹۴۵ در برلین درگذشت و آلمان در ماه مه تسلیم شد. رژیم نازی پایان یافت و کشور میان چهار قدرت پیروز تقسیم شد. دادگاه نورنبرگ (۱۹۴۵ تا ۱۹۴۶) رهبران ارشد نازی را محاکمه کرد."
+            ],
+            en: [
+              "On 30 January 1933 Adolf Hitler, leader of the Nazi Party, was appointed chancellor. Over the following months democratic government was dismantled and a one-party dictatorship was set up. The Nazi regime persecuted Jews and other groups; the Nuremberg Laws (1935) stripped Jews of their rights, and during Kristallnacht (9 and 10 November 1938) Jews, their synagogues and their shops were attacked across the country.",
+              "The Second World War began when Germany invaded Poland on 1 September 1939. During the war the Nazi regime and its collaborators murdered about six million Jews, and millions of others were also killed.",
+              "Hitler died in Berlin on 30 April 1945 and Germany surrendered in May. The Nazi regime ended and the country was divided among the four victorious powers. The Nuremberg trials (1945 to 1946) put the top Nazi leaders on trial."
+            ]
+          }
+        },
+        {
+          id: "division",
+          title: { fa: "تقسیم و اتحاد دوباره", en: "Division and reunification" },
+          text: {
+            fa: [
+              "پس از جنگ، آلمان و پایتختش برلین میان آمریکا، بریتانیا، فرانسه و شوروی تقسیم شد. در سال ۱۹۴۹ دو دولت پدید آمد: جمهوری فدرال آلمان (غربی) و جمهوری دموکراتیک آلمان (شرقی). در ۱۳ اوت ۱۹۶۱ دیوار برلین ساخته شد تا مردم نتوانند از شرق به غرب بروند.",
+              "در ۹ نوامبر ۱۹۸۹ مرزها باز شد و دیوار برلین فروریخت. آلمان شرقی در ۳ اکتبر ۱۹۹۰ به جمهوری فدرال پیوست و آلمان دوباره یک کشور شد."
+            ],
+            en: [
+              "After the war Germany and its capital Berlin were divided among the United States, Britain, France and the Soviet Union. In 1949 two states appeared: the Federal Republic of Germany (West) and the German Democratic Republic (East). On 13 August 1961 the Berlin Wall was built to stop people from going from East to West.",
+              "On 9 November 1989 the border opened and the Berlin Wall fell. East Germany joined the Federal Republic on 3 October 1990 and Germany became one country again."
+            ]
+          }
+        },
+        {
+          id: "today",
+          title: { fa: "آلمان امروز", en: "Germany today" },
+          text: {
+            fa: [
+              "آلمان امروز یک جمهوری پارلمانی فدرال است و پایتختش دوباره برلین است. این کشور عضو اتحادیه‌ی اروپا و ناتو است و بزرگ‌ترین اقتصاد اتحادیه‌ی اروپا را دارد."
+            ],
+            en: [
+              "Today Germany is a federal parliamentary republic and its capital is once again Berlin. It is a member of the European Union and NATO and has the largest economy in the European Union."
+            ]
+          }
+        }
+      ],
+      /* year: number used for ordering. yearText (optional) is shown instead when the event spans years. */
+      timeline: [
+        { year: 9,    title: { fa: "نبرد جنگل توتوبورگ", en: "Battle of the Teutoburg Forest" },
+          text: { fa: "ائتلافی از قبایل ژرمن به رهبری آرمینیوس سه لژیون رومی را نابود کرد.", en: "A coalition of Germanic tribes led by Arminius destroyed three Roman legions." } },
+        { year: 800,  title: { fa: "تاج‌گذاری شارلمانی", en: "Coronation of Charlemagne" },
+          text: { fa: "شارلمانی، پادشاه فرانک‌ها، روز کریسمس در رم از سوی پاپ لئوی سوم امپراتور شد.", en: "Charlemagne, king of the Franks, was crowned emperor in Rome by Pope Leo III on Christmas Day." } },
+        { year: 843,  title: { fa: "پیمان وردون", en: "Treaty of Verdun" },
+          text: { fa: "امپراتوری کارولنژی میان سه وارث تقسیم شد. لویی ژرمنی بخش شرقی را گرفت که بعدها هسته‌ی آلمان شد.", en: "The Carolingian Empire was divided among three heirs. Louis the German received the eastern part, which later became the core of Germany." } },
+        { year: 962,  title: { fa: "اتو اول امپراتور می‌شود", en: "Otto I becomes emperor" },
+          text: { fa: "اتو اول در رم تاج امپراتوری گرفت؛ آغاز سنتی امپراتوری مقدس روم.", en: "Otto I was crowned emperor in Rome, the traditional beginning of the Holy Roman Empire." } },
+        { year: 1356, title: { fa: "فرمان زرین", en: "The Golden Bull" },
+          text: { fa: "امپراتور شارل چهارم قاعده‌ی انتخاب امپراتور را مشخص کرد: هفت شاهزاده‌ی انتخاب‌کننده.", en: "Emperor Charles IV fixed the rule for choosing the emperor: seven prince-electors." } },
+        { year: 1517, title: { fa: "نود و پنج تز لوتر", en: "Luther’s Ninety-five Theses" },
+          text: { fa: "بنا بر روایت سنتی، مارتین لوتر در ۳۱ اکتبر نود و پنج تز خود را اعلام کرد؛ آغاز اصلاحات دینی.", en: "According to tradition, Martin Luther announced his Ninety-five Theses on 31 October, the start of the Reformation." } },
+        { year: 1555, title: { fa: "صلح آگسبورگ", en: "Peace of Augsburg" },
+          text: { fa: "شاهزادگان آلمانی حق یافتند مذهب لوتری یا کاتولیک را برای قلمرو خود برگزینند.", en: "German princes gained the right to choose Lutheranism or Catholicism for their territory." } },
+        { year: 1618, title: { fa: "آغاز جنگ سی‌ساله", en: "The Thirty Years’ War begins" },
+          text: { fa: "جنگی مذهبی و سیاسی که بخش‌های بزرگی از سرزمین‌های آلمانی را ویران کرد.", en: "A religious and political war that devastated large parts of the German lands." } },
+        { year: 1648, title: { fa: "صلح وستفالی", en: "Peace of Westphalia" },
+          text: { fa: "جنگ سی‌ساله پایان یافت.", en: "The Thirty Years’ War ended." } },
+        { year: 1806, title: { fa: "پایان امپراتوری مقدس روم", en: "End of the Holy Roman Empire" },
+          text: { fa: "فرانتس دوم در پی فشار ناپلئون از مقام امپراتوری کناره‌گیری کرد.", en: "Francis II gave up the imperial title under pressure from Napoleon." } },
+        { year: 1815, title: { fa: "کنفدراسیون آلمان", en: "The German Confederation" },
+          text: { fa: "کنگره‌ی وین اتحادیه‌ای سست از ۳۹ دولت آلمانی پدید آمد.", en: "The Congress of Vienna created a loose union of 39 German states." } },
+        { year: 1848, title: { fa: "انقلاب‌های ۱۸۴۸", en: "The revolutions of 1848" },
+          text: { fa: "مجلس فرانکفورت برای ساختن آلمانی متحد و مشروطه تشکیل شد، اما به نتیجه نرسید.", en: "The Frankfurt Parliament met to build a united, constitutional Germany, but did not succeed." } },
+        { year: 1871, title: { fa: "تأسیس امپراتوری آلمان", en: "Founding of the German Empire" },
+          text: { fa: "در ۱۸ ژانویه در تالار آینه‌ی ورسای ویلهلم اول امپراتور آلمان اعلام شد. بیسمارک صدراعظم بود.", en: "On 18 January, in the Hall of Mirrors at Versailles, Wilhelm I was proclaimed German Emperor. Bismarck was chancellor." } },
+        { year: 1914, title: { fa: "آغاز جنگ جهانی اول", en: "The First World War begins" },
+          text: { fa: "آلمان در کنار اتریش-مجارستان وارد جنگی شد که تا ۱۹۱۸ ادامه یافت.", en: "Germany entered, alongside Austria-Hungary, a war that lasted until 1918." } },
+        { year: 1918, title: { fa: "پایان جنگ و سقوط قیصر", en: "End of the war and the fall of the Kaiser" },
+          text: { fa: "ویلهلم دوم کناره‌گیری کرد و جمهوری اعلام شد.", en: "Wilhelm II abdicated and a republic was proclaimed." } },
+        { year: 1919, title: { fa: "معاهده‌ی ورسای و جمهوری وایمار", en: "Treaty of Versailles and the Weimar Republic" },
+          text: { fa: "آلمان بخشی از خاک خود را از دست داد و غرامت پرداخت. جمهوری وایمار پایه‌گذاری شد.", en: "Germany lost part of its territory and paid reparations. The Weimar Republic was founded." } },
+        { year: 1933, title: { fa: "هیتلر صدراعظم می‌شود", en: "Hitler becomes chancellor" },
+          text: { fa: "در ۳۰ ژانویه آدولف هیتلر به صدراعظمی منصوب شد و ظرف چند ماه دیکتاتوری تک‌حزبی نازی‌ها برقرار شد.", en: "On 30 January Adolf Hitler was appointed chancellor, and within months a one-party Nazi dictatorship was in place." } },
+        { year: 1938, title: { fa: "شب بلورین", en: "Kristallnacht" },
+          text: { fa: "۹ و ۱۰ نوامبر: حمله‌ی سازمان‌یافته به یهودیان، کنیسه‌ها و مغازه‌هایشان در سراسر آلمان.", en: "9 and 10 November: organized attacks on Jews, their synagogues and their shops across Germany." } },
+        { year: 1939, title: { fa: "آغاز جنگ جهانی دوم", en: "The Second World War begins" },
+          text: { fa: "در اول سپتامبر آلمان به لهستان حمله کرد.", en: "On 1 September Germany invaded Poland." } },
+        { year: 1941, yearText: { fa: "۱۹۴۱ تا ۱۹۴۵", en: "1941 to 1945" },
+          title: { fa: "هولوکاست", en: "The Holocaust" },
+          text: { fa: "رژیم نازی و همدستانش حدود شش میلیون یهودی را کشتند و میلیون‌ها نفر دیگر، از جمله رومی‌ها، معلولان، اسیران جنگی شوروی و مخالفان سیاسی، نیز قربانی شدند.", en: "The Nazi regime and its collaborators murdered about six million Jews, and millions of others were also killed." } },
+        { year: 1945, title: { fa: "پایان جنگ و رژیم نازی", en: "End of the war and the Nazi regime" },
+          text: { fa: "هیتلر ۳۰ آوریل در برلین درگذشت و آلمان در ماه مه تسلیم شد. رژیم نازی پایان یافت و کشور میان چهار قدرت پیروز تقسیم شد.", en: "Hitler died in Berlin on 30 April and Germany surrendered in May. The Nazi regime ended and the country was divided among the four victorious powers." } },
+        { year: 1945, yearText: { fa: "۱۹۴۵ تا ۱۹۴۶", en: "1945 to 1946" },
+          title: { fa: "دادگاه نورنبرگ", en: "The Nuremberg trials" },
+          text: { fa: "رهبران ارشد نازی در یک دادگاه بین‌المللی محاکمه شدند.", en: "The top Nazi leaders were tried by an international tribunal." } },
+        { year: 1949, title: { fa: "تأسیس دو دولت آلمانی", en: "Two German states are founded" },
+          text: { fa: "جمهوری فدرال آلمان (غربی) در ماه مه و جمهوری دموکراتیک آلمان (شرقی) در اکتبر تأسیس شد.", en: "The Federal Republic (West) was founded in May and the German Democratic Republic (East) in October." } },
+        { year: 1961, title: { fa: "ساخت دیوار برلین", en: "Building of the Berlin Wall" },
+          text: { fa: "دیوار در ۱۳ اوت ساخته شد.", en: "The wall was built on 13 August." } },
+        { year: 1989, title: { fa: "سقوط دیوار برلین", en: "The Berlin Wall falls" },
+          text: { fa: "در ۹ نوامبر مرزها باز شد.", en: "On 9 November the border opened." } },
+        { year: 1990, title: { fa: "اتحاد دوباره‌ی آلمان", en: "German reunification" },
+          text: { fa: "در ۳ اکتبر آلمان شرقی به جمهوری فدرال پیوست.", en: "On 3 October East Germany joined the Federal Republic." } }
+      ],
+      /* gallery: add pictures to the "images" folder, then list them here:
+         { src: "images/brandenburg-gate.jpg", caption: { fa: "...", en: "..." } } */
+      gallery: [],
+      added: "2026-10-06"
+    }
+
+    /* ---- copy a new country block here (don't forget the comma after the block above) ---- */
+  ],
+
+  /* ==========================================================
+     FIGURES / شخصیت‌ها
+     ========================================================== */
+  figures: [
+
+    {
+      id: "otto-i",
+      name: { fa: "اتو اول", en: "Otto I" },
+      country: "germany", field: "politics",
+      born: 912, died: 973,
+      summary: { fa: "نخستین امپراتور امپراتوری مقدس روم", en: "First emperor of the Holy Roman Empire" },
+      bio: {
+        fa: ["اتو اول از سال ۹۳۶ پادشاه شرق فرانکی بود و در سال ۹۶۲ در رم از سوی پاپ یوحنای دوازدهم تاج امپراتوری گرفت. تاج‌گذاری او را آغاز سنتی امپراتوری مقدس روم می‌دانند.", "او عهد جدید را به آلمانی ترجمه کرد (۱۵۲۲) و ترجمه‌ی کامل کتاب مقدس او در ۱۵۳۴ منتشر شد؛ کاری که در شکل‌گیری زبان نوشتاری آلمانی نقش مهمی داشت."],
+        en: ["Otto I was king of East Francia from 936 and was crowned emperor in Rome by Pope John XII in 962. His coronation is traditionally seen as the beginning of the Holy Roman Empire.", "He translated the New Testament into German (1522), and his complete Bible translation appeared in 1534, a work that played a major role in shaping written German."]
+      },
+      achievements: {
+        fa: ["پیروزی بر مجارها در نبرد لخفلد (۹۵۵)", "تاج امپراتوری در سال ۹۶۲", "تقویت قدرت پادشاه در برابر دوک‌های بزرگ"],
+        en: ["Victory over the Magyars at the Battle of Lechfeld (955)", "Imperial crown in 962", "Strengthened royal power against the great dukes"]
+      },
+      quote: null,
+      added: "2026-10-06"
+    },
+    {
+      id: "gutenberg",
+      name: { fa: "یوهانس گوتنبرگ", en: "Johannes Gutenberg" },
+      country: "germany", field: "invention",
+      born: 1400, died: 1468,
+      summary: { fa: "مخترع چاپ با حروف متحرک در اروپا", en: "Introduced movable-type printing to Europe" },
+      bio: {
+        fa: ["گوتنبرگ زرگر و مخترعی اهل ماینتس بود. زندگی او در منابع کم‌سند است و سال تولدش حدود ۱۴۰۰ برآورد می‌شود.", "او حدود سال ۱۴۵۰ ماشین چاپ با حروف متحرک را در اروپا به کار انداخت. «انجیل گوتنبرگ» که حدود ۱۴۵۵ چاپ شد، از نخستین کتاب‌های بزرگ چاپی اروپاست."],
+        en: ["Gutenberg was a goldsmith and inventor from Mainz. His life is poorly documented and his birth year is estimated at about 1400.", "Around 1450 he put the movable-type printing press into use in Europe. The Gutenberg Bible, printed about 1455, is among the first major printed books in Europe."]
+      },
+      achievements: {
+        fa: ["چاپ با حروف متحرک در اروپا", "انجیل گوتنبرگ (حدود ۱۴۵۵)", "ارزان‌تر و پرشمارتر شدن کتاب"],
+        en: ["Movable-type printing in Europe", "The Gutenberg Bible (about 1455)", "Made books cheaper and more numerous"]
+      },
+      quote: null,
+      added: "2026-10-06"
+    },
+    {
+      id: "luther",
+      name: { fa: "مارتین لوتر", en: "Martin Luther" },
+      country: "germany", field: "thought",
+      born: 1483, died: 1546,
+      summary: { fa: "راهب و الهی‌دان، آغازگر اصلاحات دینی", en: "Monk and theologian who started the Reformation" },
+      bio: {
+        fa: ["مارتین لوتر راهب و استاد الهیات بود. در ۱۵۱۷ نود و پنج تز او درباره‌ی فروش آمرزش‌نامه‌ها جنبشی را آغاز کرد که مسیحیت غربی را دگرگون کرد.", "او عهد جدید را به آلمانی ترجمه کرد (۱۵۲۲) و ترجمه‌ی کامل کتاب مقدس او در ۱۵۳۴ منتشر شد؛ کاری که در شکل‌گیری زبان نوشتاری آلمانی نقش مهمی داشت."],
+        en: ["Martin Luther was a monk and professor of theology. In 1517 his Ninety-five Theses on the sale of indulgences started a movement that changed Western Christianity.", "He translated the New Testament into German (1522), and his complete Bible translation appeared in 1534, a work that played a major role in shaping written German."]
+      },
+      achievements: {
+        fa: ["نود و پنج تز (۱۵۱۷)", "ترجمه‌ی کتاب مقدس به آلمانی", "آغاز اصلاحات پروتستانی"],
+        en: ["The Ninety-five Theses (1517)", "Translation of the Bible into German", "Start of the Protestant Reformation"]
+      },
+      quote: null,
+      added: "2026-10-06"
+    },
+    {
+      id: "kepler",
+      name: { fa: "یوهانس کپلر", en: "Johannes Kepler" },
+      country: "germany", field: "science",
+      born: 1571, died: 1630,
+      summary: { fa: "ستاره‌شناس و کاشف قوانین حرکت سیارات", en: "Astronomer who discovered the laws of planetary motion" },
+      bio: {
+        fa: ["کپلر ستاره‌شناس و ریاضی‌دان آلمانی بود. او با تحلیل مشاهدات دقیق تیکو براهه نشان داد که سیارات در مدارهایی بیضوی به دور خورشید می‌گردند."],
+        en: ["Kepler was a German astronomer and mathematician. By analysing the precise observations of Tycho Brahe he showed that the planets move around the Sun in elliptical orbits."]
+      },
+      achievements: {
+        fa: ["سه قانون حرکت سیارات (۱۶۰۹ و ۱۶۱۹)", "کتاب «ستاره‌شناسی نوین» (۱۶۰۹)"],
+        en: ["Three laws of planetary motion (1609 and 1619)", "The book Astronomia nova (1609)"]
+      },
+      quote: null,
+      added: "2026-10-06"
+    },
+    {
+      id: "bach",
+      name: { fa: "یوهان سباستین باخ", en: "Johann Sebastian Bach" },
+      country: "germany", field: "arts",
+      born: 1685, died: 1750,
+      summary: { fa: "آهنگساز بزرگ دوره‌ی باروک", en: "Great composer of the Baroque period" },
+      bio: {
+        fa: ["باخ در آیزناخ به دنیا آمد و بیشتر عمرش را به‌عنوان نوازنده‌ی ارگ و رهبر موسیقی کلیسا و دربار کار کرد؛ سال‌های پایانی عمرش را در لایپزیگ گذراند. موسیقی او در زمان زندگی‌اش بیشتر در آلمان شناخته بود و ارزش جهانی‌اش بعدها شناخته شد."],
+        en: ["Bach was born in Eisenach and spent most of his life as an organist and as a director of music for churches and courts; he spent his last years in Leipzig. During his lifetime his music was known mainly in Germany, and its worldwide value was recognized later."]
+      },
+      achievements: {
+        fa: ["کنسرتوهای براندنبورگ", "گذر مسیح بر اساس متی", "مس در سی مینور", "کلاویه‌ی خوش‌کوک"],
+        en: ["The Brandenburg Concertos", "St Matthew Passion", "Mass in B minor", "The Well-Tempered Clavier"]
+      },
+      quote: null,
+      added: "2026-10-06"
+    },
+    {
+      id: "kant",
+      name: { fa: "ایمانوئل کانت", en: "Immanuel Kant" },
+      country: "germany", field: "thought",
+      born: 1724, died: 1804,
+      summary: { fa: "فیلسوف بزرگ عصر روشنگری", en: "Major philosopher of the Enlightenment" },
+      bio: {
+        fa: ["کانت در کونیگسبرگ، که آن زمان در پروس بود (امروز کالینینگRAD در روسیه)، به دنیا آمد و تقریباً تمام عمرش را همان‌جا گذراند و تدریس کرد.", "کتاب «نقد عقل محض» (۱۷۸۱) او پرسش‌هایی درباره‌ی حدود شناخت انسان را مطرح کرد و بر فلسفه‌ی پس از خود اثری عمیق گذاشت."],
+        en: ["Kant was born in Königsberg, then in Prussia (today Kaliningrad in Russia), and spent almost his whole life teaching there.", "His Critique of Pure Reason (1781) raised questions about the limits of human knowledge and left a deep mark on later philosophy."]
+      },
+      achievements: {
+        fa: ["نقد عقل محض (۱۷۸۱)", "مقاله‌ی «روشنگری چیست؟» (۱۷۸۴)", "آثار مهم در اخلاق"],
+        en: ["Critique of Pure Reason (1781)", "The essay ‘What Is Enlightenment?’ (1784)", "Major works on ethics"]
+      },
+      quote: null,
+      added: "2026-10-06"
+    },
+    {
+      id: "goethe",
+      name: { fa: "یوهان ولفگانگ فون گوته", en: "Johann Wolfgang von Goethe" },
+      country: "germany", field: "arts",
+      born: 1749, died: 1832,
+      summary: { fa: "شاعر، نمایشنامه‌نویس و دانشمند", en: "Poet, playwright and scientist" },
+      bio: {
+        fa: ["گوته در فرانکفورت به دنیا آمد و بیشتر عمرش را در وایمار گذراند. جز ادبیات، در زمینه‌ی گیاه‌شناسی و نظریه‌ی رنگ هم نوشت."],
+        en: ["Goethe was born in Frankfurt and spent most of his life in Weimar. Besides literature he also wrote on botany and on the theory of colour."]
+      },
+      achievements: {
+        fa: ["نمایشنامه‌ی فاوست", "رمان «رنج‌های ورتر جوان» (۱۷۷۴)", "نوشته‌های علمی درباره‌ی رنگ و گیاهان"],
+        en: ["The play Faust", "The novel The Sorrows of Young Werther (1774)", "Scientific writings on colour and plants"]
+      },
+      quote: null,
+      added: "2026-10-06"
+    },
+    {
+      id: "beethoven",
+      name: { fa: "لودویگ فان بتهوون", en: "Ludwig van Beethoven" },
+      country: "germany", field: "arts", era: "modern",
+      born: 1770, died: 1827,
+      summary: { fa: "آهنگساز نه سمفونی بزرگ", en: "Composer of nine great symphonies" },
+      bio: {
+        fa: ["بتهوون در بن به دنیا آمد (سال تولد ۱۷۷۰ است و تاریخ دقیق آن مشخص نیست) و بیشتر عمرش را در وین گذراند. شنوایی‌اش به‌تدریج ضعیف شد و او در سال‌های پایانی عمر کاملاً ناشنوا بود، اما به آهنگسازی ادامه داد."],
+        en: ["Beethoven was born in Bonn (the year was 1770, the exact date is unknown) and spent most of his life in Vienna. His hearing gradually failed and he was completely deaf in his last years, but he kept composing."]
+      },
+      achievements: {
+        fa: ["نه سمفونی", "سونات‌های پیانو", "سمفونی نهم با سرود شادی"],
+        en: ["Nine symphonies", "Piano sonatas", "The Ninth Symphony with its Ode to Joy"]
+      },
+      quote: null,
+      added: "2026-10-06"
+    },
+    {
+      id: "bismarck",
+      name: { fa: "اتو فون بیسمارک", en: "Otto von Bismarck" },
+      country: "germany", field: "politics",
+      born: 1815, died: 1898,
+      summary: { fa: "سیاستمدار پروسی و نخستین صدراعظم امپراتوری آلمان", en: "Prussian statesman and first chancellor of the German Empire" },
+      bio: {
+        fa: ["بیسمارک از ۱۸۶۲ نخست‌وزیر پروس بود و پس از اتحاد آلمان در ۱۸۷۱ تا ۱۸۹۰ صدراعظم امپراتوری آلمان بود.", "در دهه‌ی ۱۸۸۰ قوانین بیمه‌ی درمانی (۱۸۸۳)، حوادث (۱۸۸۴) و بازنشستگی (۱۸۸۹) در دوران او تصویب شد."],
+        en: ["Bismarck was minister-president of Prussia from 1862 and, after unification in 1871, chancellor of the German Empire until 1890.", "In the 1880s health insurance (1883), accident insurance (1884) and old-age insurance (1889) laws were passed during his time in office."]
+      },
+      achievements: {
+        fa: ["رهبری سیاسی اتحاد آلمان (۱۸۷۱)", "صدراعظمی از ۱۸۷۱ تا ۱۸۹۰", "قوانین بیمه‌ی اجتماعی در دهه‌ی ۱۸۸۰"],
+        en: ["Political leadership of German unification (1871)", "Chancellor from 1871 to 1890", "Social insurance laws in the 1880s"]
+      },
+      quote: null,
+      added: "2026-10-06"
+    },
+    {
+      id: "einstein",
+      name: { fa: "آلبرت اینشتین", en: "Albert Einstein" },
+      country: "germany", field: "science",
+      born: 1879, died: 1955,
+      summary: { fa: "فیزیک‌دان و پدید‌آورنده‌ی نظریه‌ی نسبیت", en: "Physicist who developed the theory of relativity" },
+      bio: {
+        fa: ["اینشتین در اولم آلمان به دنیا آمد. نسبیت خاص را در ۱۹۰۵ و نسبیت عام را در ۱۹۱۵ ارائه کرد و در ۱۹۲۱ جایزه‌ی نوبل فیزیک را برای توضیح اثر فوتوالکتریک گرفت.", "در ۱۹۳۳، هنگام قدرت‌گیری نازی‌ها، تصمیم گرفت به آلمان برنگردد و سال‌های پایانی عمرش را در آمریکا گذراند."],
+        en: ["Einstein was born in Ulm, Germany. He presented special relativity in 1905 and general relativity in 1915, and in 1921 he received the Nobel Prize in Physics for explaining the photoelectric effect.", "In 1933, as the Nazis took power, he decided not to return to Germany and spent his last years in the United States."]
+      },
+      achievements: {
+        fa: ["نسبیت خاص (۱۹۰۵)", "نسبیت عام (۱۹۱۵)", "جایزه‌ی نوبل فیزیک (۱۹۲۱)"],
+        en: ["Special relativity (1905)", "General relativity (1915)", "Nobel Prize in Physics (1921)"]
+      },
+      quote: null,
+      added: "2026-10-06"
+    },
+    {
+      id: "merkel",
+      name: { fa: "آنگلا مرکل", en: "Angela Merkel" },
+      country: "germany", field: "politics",
+      born: 1954, died: null,
+      summary: { fa: "نخستین زن صدراعظم آلمان", en: "First woman to serve as chancellor of Germany" },
+      bio: {
+        fa: ["مرکل در هامبورگ به دنیا آمد و در آلمان شرقی بزرگ شد. او در رشته‌ی فیزیک تحصیل کرد و دکترای شیمی کوانتومی دارد. از ۲۰۰۵ تا ۲۰۲۱ صدراعظم آلمان بود و نخستین زنی است که این مقام را داشته است."],
+        en: ["Merkel was born in Hamburg and grew up in East Germany. She studied physics and holds a doctorate in quantum chemistry. She was chancellor of Germany from 2005 to 2021 and is the first woman to hold the office."]
+      },
+      achievements: {
+        fa: ["صدراعظمی از ۲۰۰۵ تا ۲۰۲۱", "رهبری حزب دموکرات مسیحی (۲۰۰۰ تا ۲۰۱۸)"],
+        en: ["Chancellor from 2005 to 2021", "Leader of the Christian Democratic Union (2000 to 2018)"]
+      },
+      quote: null,
+      added: "2026-10-06"
+    }
+
+    /* ---- copy a new figure block here (don't forget the comma after the block above) ---- */
+  ],
+
+  /* ==========================================================
+     THIS DAY IN HISTORY / این روز در تاریخ
+     month: 1-12, day: 1-31. The homepage shows today's date, or the next date on the calendar.
+     country (optional): id of a country page to link to.
+     ========================================================== */
+  onThisDay: [
+    { month: 1,  day: 18, year: 1871, country: "germany",
+      title: { fa: "اعلام امپراتوری آلمان", en: "The German Empire is proclaimed" },
+      text:  { fa: "در تالار آینه‌ی کاخ ورسای، ویلهلم اول امپراتور آلمان اعلام شد.", en: "In the Hall of Mirrors at Versailles, Wilhelm I was proclaimed German Emperor." } },
+    { month: 1,  day: 30, year: 1933, country: "germany",
+      title: { fa: "هیتلر به صدراعظمی منصوب می‌شود", en: "Hitler is appointed chancellor" },
+      text:  { fa: "آغاز راه برچیده‌شدن دموکراسی در آلمان.", en: "The start of the dismantling of democracy in Germany." } },
+    { month: 5,  day: 8,  year: 1945, country: "germany",
+      title: { fa: "پایان جنگ جهانی دوم در اروپا", en: "The Second World War ends in Europe" },
+      text:  { fa: "تسلیم بی‌قیدوشرط آلمان نازی به اجرا درآمد.", en: "The unconditional surrender of Nazi Germany took effect." } },
+    { month: 8,  day: 13, year: 1961, country: "germany",
+      title: { fa: "ساخت دیوار برلین", en: "The Berlin Wall is built" },
+      text:  { fa: "شهر برلین به دو بخش شرقی و غربی تقسیم شد.", en: "The city of Berlin was split into an eastern and a western part." } },
+    { month: 9,  day: 1,  year: 1939, country: "germany",
+      title: { fa: "آغاز جنگ جهانی دوم", en: "The Second World War begins" },
+      text:  { fa: "آلمان به لهستان حمله کرد.", en: "Germany invaded Poland." } },
+    { month: 10, day: 3,  year: 1990, country: "germany",
+      title: { fa: "اتحاد دوباره‌ی آلمان", en: "German reunification" },
+      text:  { fa: "آلمان شرقی به جمهوری فدرال آلمان پیوست.", en: "East Germany joined the Federal Republic of Germany." } },
+    { month: 10, day: 31, year: 1517, country: "germany",
+      title: { fa: "نود و پنج تز لوتر", en: "Luther’s Ninety-five Theses" },
+      text:  { fa: "بنا بر روایت سنتی، مارتین لوتر تزهای خود را اعلام کرد و اصلاحات دینی آغاز شد.", en: "According to tradition, Martin Luther announced his theses and the Reformation began." } },
+    { month: 11, day: 9,  year: 1938, country: "germany",
+      title: { fa: "شب بلورین", en: "Kristallnacht" },
+      text:  { fa: "در شب ۹ به ۱۰ نوامبر به یهودیان، کنیسه‌ها و مغازه‌هایشان در سراسر آلمان حمله شد.", en: "On the night of 9 to 10 November, Jews, their synagogues and their shops were attacked across Germany." } },
+    { month: 11, day: 9,  year: 1989, country: "germany",
+      title: { fa: "سقوط دیوار برلین", en: "The Berlin Wall falls" },
+      text:  { fa: "مرزها باز شد.", en: "The border opened." } }
+  ]
+};
+
+</script>
+  <script>
+/* ==========================================================
+   Historium - application script
+   You normally do not need to edit this file.
+   Content lives in js/data.js, interface texts in js/strings.js.
+   ========================================================== */
+(function () {
+  'use strict';
+
+  var D = window.HISTORIUM_DATA;
+  var S = window.HISTORIUM_STRINGS;
+
+  var appEl = document.getElementById('app');
+  var headerEl = document.getElementById('site-header');
+  var footerEl = document.getElementById('site-footer');
+  var progressEl = document.getElementById('progress');
+  var skipEl = document.getElementById('skip-link');
+
+  var lang = 'fa';
+  try {
+    var saved = localStorage.getItem('historium-lang');
+    if (saved === 'fa' || saved === 'en') { lang = saved; }
+  } catch (e) { /* storage may be unavailable */ }
+
+  var reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  var figFilter = { country: '', field: '' };
+
+  /* ---------- helpers ---------- */
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function L(o) {
+    if (o == null) { return ''; }
+    if (typeof o === 'string') { return o; }
+    return o[lang] || o.en || o.fa || '';
+  }
+  function t(key) {
+    var v = S[key];
+    if (!v) { return key; }
+    return v[lang] || v.en || '';
+  }
+  function num(n) {
+    var s = String(n);
+    if (lang !== 'fa') { return s; }
+    return s.replace(/\d/g, function (d) { return '\u06F0\u06F1\u06F2\u06F3\u06F4\u06F5\u06F6\u06F7\u06F8\u06F9'.charAt(+d); });
+  }
+  function yearLabel(y) {
+    return y < 0 ? num(-y) + ' ' + t('bce') : num(y);
+  }
+  function paragraphs(list) {
+    var arr = Array.isArray(list) ? list : (list ? (list[lang] || list.en || list.fa || []) : []);
+    return arr.map(function (p) { return '<p>' + esc(p) + '</p>'; }).join('');
+  }
+  function listOf(obj) {
+    return (obj && (obj[lang] || obj.en || obj.fa)) || [];
+  }
+  function norm(s) {
+    return String(s).toLowerCase().replace(/\u064A/g, '\u06CC').replace(/\u0643/g, '\u06A9');
+  }
+  function firstChar(s) {
+    var a = Array.from(String(s).trim());
+    return a.length ? a[0] : '?';
+  }
+  function fmtDate(month, day, year) {
+    return num(day) + ' ' + S.months[lang][month - 1] + ' ' + yearLabel(year);
+  }
+  function fmtISO(iso) {
+    var p = String(iso).split('-');
+    if (p.length !== 3) { return esc(iso); }
+    return num(+p[2]) + ' ' + S.months[lang][+p[1] - 1] + ' ' + num(+p[0]);
+  }
+  function ageOf(c) {
+    var y = new Date().getFullYear();
+    return c.founded < 0 ? y - c.founded - 1 : y - c.founded;
+  }
+  function ageText(c) {
+    return t('ageText').replace('{n}', num(ageOf(c)));
+  }
+  function findCountry(id) {
+    for (var i = 0; i < D.countries.length; i++) { if (D.countries[i].id === id) { return D.countries[i]; } }
+    return null;
+  }
+  function findFigure(id) {
+    for (var i = 0; i < D.figures.length; i++) { if (D.figures[i].id === id) { return D.figures[i]; } }
+    return null;
+  }
+  function eraOf(f) {
+    var i, e;
+    if (f.era) {
+      for (i = 0; i < D.eras.length; i++) { if (D.eras[i].id === f.era) { return D.eras[i]; } }
+    }
+    for (i = 0; i < D.eras.length; i++) {
+      e = D.eras[i];
+      if (f.born >= e.from && f.born <= e.to) { return e; }
+    }
+    return D.eras[D.eras.length - 1];
+  }
+  function lifespan(f) {
+    if (f.died == null) { return t('bornPrefix') + ' ' + yearLabel(f.born); }
+    return yearLabel(f.born) + ' \u2013 ' + yearLabel(f.died);
+  }
+  function flagHTML(c, cls) {
+    if (c.flagImage) {
+      return '<span class="' + cls + '" aria-hidden="true"><img class="flag-img" src="' + esc(c.flagImage) + '" alt=""></span>';
+    }
+    var colors = c.flag && c.flag.length ? c.flag : ['#999999'];
+    var n = colors.length, parts = [];
+    for (var i = 0; i < n; i++) {
+      parts.push(colors[i] + ' ' + (i * 100 / n).toFixed(2) + '% ' + ((i + 1) * 100 / n).toFixed(2) + '%');
+    }
+    var dir = c.flagDirection === 'vertical' ? 'to right' : 'to bottom';
+    return '<span class="' + cls + '" aria-hidden="true"><span class="flag" style="background:linear-gradient(' + dir + ',' + esc(parts.join(',')) + ')"></span></span>';
+  }
+  function monoHTML(f, big) {
+    var inner = f.image
+      ? '<img src="' + esc(f.image) + '" alt="">'
+      : esc(firstChar(L(f.name)));
+    return '<span class="mono' + (big ? ' big' : '') + '" aria-hidden="true">' + inner + '</span>';
+  }
+
+  var ICONS = {
+    countries: '<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="18"/><ellipse cx="24" cy="24" rx="8" ry="18"/><path d="M6 24h36M9 14h30M9 34h30"/></svg>',
+    figures: '<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="16" r="8"/><path d="M8 42c0-9 7-15 16-15s16 6 16 15z"/></svg>',
+    ages: '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M12 6h24M12 42h24M14 6c0 10 10 12 10 18S14 32 14 42M34 6c0 10-10 12-10 18s10 8 10 18"/></svg>'
+  };
+
+  /* ---------- chrome (header and footer) ---------- */
+  function renderChrome(section) {
+    var links = [
+      ['/', 'navHome'], ['/countries', 'navCountries'],
+      ['/figures', 'navFigures'], ['/ages', 'navAges']
+    ];
+    var nav = links.map(function (l) {
+      var cur = l[0] === section ? ' aria-current="page"' : '';
+      return '<a href="#' + l[0] + '"' + cur + '>' + esc(t(l[1])) + '</a>';
+    }).join('');
+    var other = lang === 'fa' ? 'en' : 'fa';
+    headerEl.innerHTML =
+      '<a class="logo" href="#/">Historium</a>' +
+      '<nav class="main-nav" aria-label="Historium">' + nav + '</nav>' +
+      '<button type="button" class="lang-btn" id="lang-btn" lang="' + other + '" aria-label="' + esc(t('langSwitchLabel')) + '">' + esc(t('langSwitch')) + '</button>';
+    footerEl.innerHTML = '<p>' + esc(t('footerText')) + '</p>' +
+      '<p style="font-size:0.8em; margin-top:0.45rem; opacity:0.85;">' + esc(t('footerLove')) + '</p>' +
+      '<p style="font-size:0.85em;margin-top:0.4rem">© Historium ' + num(new Date().getFullYear()) + '</p>';
+    skipEl.textContent = t('skip');
+  }
+
+  /* ---------- reusable pieces ---------- */
+  function sectionTitle(text, extra) {
+    return '<div class="section-title"><h2>' + esc(text) + '</h2>' + (extra || '') + '</div>';
+  }
+  function countryCard(c) {
+    var search = norm(L(c.name) + ' ' + (c.name.fa || '') + ' ' + (c.name.en || ''));
+    return '<a class="country-card frame" href="#/country/' + esc(c.id) + '" data-search="' + esc(search) + '">' +
+      flagHTML(c, 'flag-band') +
+      '<span class="body"><h3>' + esc(L(c.name)) + '</h3>' +
+      '<p class="age">' + esc(ageText(c)) + '</p>' +
+      '<p class="sum">' + esc(L(c.summary)) + '</p></span></a>';
+  }
+  function figCard(f) {
+    var c = findCountry(f.country);
+    return '<a class="fig-card frame" href="#/figure/' + esc(f.id) + '">' + monoHTML(f, false) +
+      '<span><span class="nm">' + esc(L(f.name)) + '</span><br>' +
+      '<span class="yr">' + esc(lifespan(f)) + (c ? ' \u2013 ' + esc(L(c.name)) : '') + '</span><br>' +
+      '<span class="kn">' + esc(L(f.summary)) + '</span></span></a>';
+  }
+
+  /* ---------- views ---------- */
+  function pickToday() {
+    var list = D.onThisDay || [];
+    if (!list.length) { return null; }
+    var now = new Date(), m = now.getMonth() + 1, d = now.getDate();
+    var exact = list.filter(function (e) { return e.month === m && e.day === d; });
+    if (exact.length) { return { entries: exact, exact: true }; }
+    var key = function (mm, dd) { return mm * 40 + dd; };
+    var cur = key(m, d), best = null, bestDist = 1e9;
+    list.forEach(function (e) {
+      var dist = key(e.month, e.day) - cur;
+      if (dist < 0) { dist += 12 * 40; }
+      if (dist < bestDist) { bestDist = dist; best = e; }
+    });
+    var same = list.filter(function (e) { return e.month === best.month && e.day === best.day; });
+    return { entries: same, exact: false };
+  }
+
+  function viewHome() {
+    var other = lang === 'fa' ? 'en' : 'fa';
+    var hero =
+      '<section class="hero" aria-labelledby="slogan"><div class="scroll">' +
+      '<div class="scroll-rod"></div>' +
+      '<div class="scroll-sheet">' +
+      '<h1 class="slogan" id="slogan">' + esc(L(S.slogan)) + '</h1>' +
+      '<p class="slogan-alt" lang="' + other + '" dir="' + (other === 'fa' ? 'rtl' : 'ltr') + '">' + esc(S.slogan[other]) + '</p>' +
+      '<p class="tagline">' + esc(t('tagline')) + '</p>' +
+      '</div><div class="scroll-rod"></div></div></section>';
+
+    var entries = [
+      ['/countries', 'countries', 'cardCountriesTitle', 'cardCountriesText'],
+      ['/figures', 'figures', 'cardFiguresTitle', 'cardFiguresText'],
+      ['/ages', 'ages', 'cardAgesTitle', 'cardAgesText']
+    ].map(function (e) {
+      return '<a class="entry frame" href="#' + e[0] + '">' + ICONS[e[1]] +
+        '<h3>' + esc(t(e[2])) + '</h3><p>' + esc(t(e[3])) + '</p></a>';
+    }).join('');
+
+    var html = hero + '<div class="page">' +
+      sectionTitle(t('introTitle')) + '<p class="lead">' + esc(t('intro')) + '</p>' +
+      '<div class="entry-grid" style="margin-top:2rem">' + entries + '</div>';
+
+    var today = pickToday();
+    if (today) {
+      html += sectionTitle(t('todayTitle'));
+      html += '<div class="today frame">';
+      html += '<p class="note">' + esc(today.exact ? t('todayExact') : t('todayNext')) + '</p>';
+      today.entries.forEach(function (e, i) {
+        html += '<div' + (i ? ' style="margin-top:1.25rem"' : '') + '>' +
+          '<p class="date">' + esc(fmtDate(e.month, e.day, e.year)) + '</p>' +
+          '<h3>' + esc(L(e.title)) + '</h3><p>' + esc(L(e.text)) + '</p>' +
+          (e.country && findCountry(e.country) ? '<a href="#/country/' + esc(e.country) + '">' + esc(t('readMore')) + '</a>' : '') +
+          '</div>';
+      });
+      html += '</div>';
+    }
+
+    var items = [];
+    D.countries.forEach(function (c) { if (c.added) { items.push({ kind: 'typeCountry', href: '#/country/' + c.id, name: L(c.name), added: c.added }); } });
+    D.figures.forEach(function (f) { if (f.added) { items.push({ kind: 'typeFigure', href: '#/figure/' + f.id, name: L(f.name), added: f.added }); } });
+    items.sort(function (a, b) { return a.added < b.added ? 1 : (a.added > b.added ? -1 : 0); });
+    items = items.slice(0, 5);
+    if (items.length) {
+      html += sectionTitle(t('latestTitle'));
+      html += '<div class="frame" style="padding:0.75rem 1.5rem"><ul class="latest-list">' + items.map(function (it) {
+        return '<li><span class="kind">' + esc(t(it.kind)) + '</span><a href="' + esc(it.href) + '">' + esc(it.name) + '</a>' +
+          '<span class="when">' + fmtISO(it.added) + '</span></li>';
+      }).join('') + '</ul></div>';
+    }
+    return html + '</div>';
+  }
+
+  function viewCountries() {
+    return '<div class="page"><h1>' + esc(t('countriesTitle')) + '</h1>' +
+      '<p class="lead">' + esc(t('countriesLead')) + '</p>' +
+      '<div class="searchbar"><label for="q" class="sr-only">' + esc(t('searchLabel')) + '</label>' +
+      '<input id="q" type="search" autocomplete="off" placeholder="' + esc(t('searchPlaceholder')) + '"></div>' +
+      '<div class="card-grid" id="country-grid">' + D.countries.map(countryCard).join('') + '</div>' +
+      '<p class="empty" id="no-results" hidden>' + esc(t('noResults')) + '</p></div>';
+  }
+
+  function viewCountry(c) {
+    var idx = D.countries.indexOf(c);
+    var prev = D.countries[idx - 1], next = D.countries[idx + 1];
+    var figs = D.figures.filter(function (f) { return f.country === c.id; }).sort(function (a, b) { return a.born - b.born; });
+    var toc = [['sec-overview', t('overviewTitle')]];
+    (c.sections || []).forEach(function (s) { toc.push(['sec-' + s.id, L(s.title)]); });
+    if (c.timeline && c.timeline.length) { toc.push(['sec-timeline', t('timelineTitle')]); }
+    if (figs.length) { toc.push(['sec-figures', t('figuresOfCountry')]); }
+    if (c.gallery && c.gallery.length) { toc.push(['sec-gallery', t('galleryTitle')]); }
+
+    var facts = '<div><dt>' + esc(t('factFounded')) + '</dt><dd>' + esc(yearLabel(c.founded)) + '</dd></div>';
+    if (c.facts) {
+      [['capital', 'factCapital'], ['language', 'factLanguage'], ['population', 'factPopulation']].forEach(function (k) {
+        if (c.facts[k[0]]) { facts += '<div><dt>' + esc(t(k[1])) + '</dt><dd>' + esc(L(c.facts[k[0]])) + '</dd></div>'; }
+      });
+    }
+
+    var html = '<div class="page">' +
+      '<p class="crumb"><a href="#/countries">' + esc(t('backToCountries')) + '</a></p>' +
+      '<header class="country-head">' + flagHTML(c, 'flag-big') +
+      '<div><h1>' + esc(L(c.name)) + '</h1><p class="lead" style="margin:0.25rem 0 0">' + esc(L(c.summary)) + '</p></div>' +
+      '<a class="seal" href="#/ages" aria-label="' + esc(t('ageBadgeLabel')) + '"><span class="n">' + esc(num(ageOf(c))) + '</span><span class="u">' + esc(t('ageSealUnit')) + '</span></a>' +
+      '</header>' +
+      '<div class="country-layout"><div class="country-main">';
+
+    html += '<section id="sec-overview"><h2>' + esc(t('overviewTitle')) + '</h2>' + paragraphs(c.overview);
+    if (c.foundedNote) {
+      html += '<div class="why-date"><strong>' + esc(t('whyDate')) + '</strong><p>' + esc(L(c.foundedNote)) + '</p></div>';
+    }
+    html += '</section>';
+
+    (c.sections || []).forEach(function (s) {
+      html += '<section id="sec-' + esc(s.id) + '"><h2>' + esc(L(s.title)) + '</h2>' + paragraphs(s.text) + '</section>';
+    });
+
+    if (c.timeline && c.timeline.length) {
+      html += '<section id="sec-timeline"><h2>' + esc(t('timelineTitle')) + '</h2><p class="hint">' + esc(t('timelineHint')) + '</p><ol class="timeline">';
+      c.timeline.forEach(function (ev) {
+        html += '<li><details><summary><span class="t-year">' + esc(ev.yearText ? L(ev.yearText) : yearLabel(ev.year)) + '</span>' +
+          '<span class="t-title">' + esc(L(ev.title)) + '</span></summary>' +
+          '<p class="t-text">' + esc(L(ev.text)) + '</p></details></li>';
+      });
+      html += '</ol></section>';
+    }
+
+    if (figs.length) {
+      html += '<section id="sec-figures"><h2>' + esc(t('figuresOfCountry')) + '</h2><div class="mini-grid">' + figs.map(figCard).join('') + '</div></section>';
+    }
+    if (c.gallery && c.gallery.length) {
+      html += '<section id="sec-gallery"><h2>' + esc(t('galleryTitle')) + '</h2><div class="gallery">' + c.gallery.map(function (g) {
+        return '<figure class="frame"><img src="' + esc(g.src) + '" alt="' + esc(L(g.caption)) + '" loading="lazy"><figcaption>' + esc(L(g.caption)) + '</figcaption></figure>';
+      }).join('') + '</div></section>';
+    }
+
+    html += '</div><aside class="side">' +
+      '<div class="box frame"><h2>' + esc(t('quickFacts')) + '</h2><dl class="facts">' + facts + '</dl></div>' +
+      '<nav class="box frame" aria-label="' + esc(t('toc')) + '"><h2>' + esc(t('toc')) + '</h2><ul class="toc">' +
+      toc.map(function (x) { return '<li><a href="#/country/' + esc(c.id) + '" data-scroll="' + esc(x[0]) + '">' + esc(x[1]) + '</a></li>'; }).join('') +
+      '</ul></nav></aside></div>';
+
+    if (prev || next) {
+      html += '<nav class="pager" aria-label="' + esc(t('navCountries')) + '">' +
+        (prev ? '<a href="#/country/' + esc(prev.id) + '"><small>' + esc(t('prevCountry')) + '</small>' + esc(L(prev.name)) + '</a>' : '<span></span>') +
+        (next ? '<a href="#/country/' + esc(next.id) + '"><small>' + esc(t('nextCountry')) + '</small>' + esc(L(next.name)) + '</a>' : '<span></span>') +
+        '</nav>';
+    }
+    return html + '</div>';
+  }
+
+  function figResults() {
+    var list = D.figures.filter(function (f) {
+      return (!figFilter.country || f.country === figFilter.country) && (!figFilter.field || f.field === figFilter.field);
+    });
+    if (!list.length) { return '<p class="empty">' + esc(t('noFigures')) + '</p>'; }
+    var groups = [];
+    D.eras.forEach(function (e) {
+      var inEra = list.filter(function (f) { return eraOf(f) === e; }).sort(function (a, b) { return a.born - b.born; });
+      if (inEra.length) { groups.push({ era: e, list: inEra }); }
+    });
+    var nav = '<nav class="era-nav" aria-label="' + esc(t('eraNav')) + '">' + groups.map(function (g) {
+      return '<a href="#/figures" data-scroll="era-' + esc(g.era.id) + '">' + esc(L(g.era.name)) + '</a>';
+    }).join('') + '</nav>';
+    var body = groups.map(function (g) {
+      var from = g.era.from < -5000 ? '' : yearLabel(g.era.from);
+      var to = g.era.to > 5000 ? '' : yearLabel(g.era.to);
+      var range = from && to ? from + ' \u2013 ' + to : (from ? from + ' \u2013' : '\u2013 ' + to);
+      return '<section class="era" id="era-' + esc(g.era.id) + '" style="--era:' + esc(g.era.color) + '">' +
+        '<div class="era-banner"><h2>' + esc(L(g.era.name)) + '</h2><div class="range">' + esc(range) + '</div><p>' + esc(L(g.era.desc)) + '</p></div>' +
+        '<div class="mini-grid">' + g.list.map(figCard).join('') + '</div></section>';
+    }).join('');
+    return nav + body;
+  }
+
+  function viewFigures() {
+    var usedCountries = [], usedFields = [];
+    D.figures.forEach(function (f) {
+      if (usedCountries.indexOf(f.country) < 0) { usedCountries.push(f.country); }
+      if (usedFields.indexOf(f.field) < 0) { usedFields.push(f.field); }
+    });
+    var cOpts = '<option value="">' + esc(t('all')) + '</option>' + usedCountries.map(function (id) {
+      var c = findCountry(id);
+      return '<option value="' + esc(id) + '"' + (figFilter.country === id ? ' selected' : '') + '>' + esc(c ? L(c.name) : id) + '</option>';
+    }).join('');
+    var fOpts = '<option value="">' + esc(t('all')) + '</option>' + usedFields.map(function (k) {
+      return '<option value="' + esc(k) + '"' + (figFilter.field === k ? ' selected' : '') + '>' + esc(D.fields[k] ? L(D.fields[k]) : k) + '</option>';
+    }).join('');
+    return '<div class="page"><h1>' + esc(t('figuresTitle')) + '</h1><p class="lead">' + esc(t('figuresLead')) + '</p>' +
+      '<div class="filters">' +
+      '<div><label for="f-country">' + esc(t('filterCountry')) + '</label><select id="f-country">' + cOpts + '</select></div>' +
+      '<div><label for="f-field">' + esc(t('filterField')) + '</label><select id="f-field">' + fOpts + '</select></div>' +
+      '<div><button type="button" class="btn" id="random-fig">' + esc(t('randomFigure')) + '</button></div>' +
+      '</div><div id="fig-results">' + figResults() + '</div></div>';
+  }
+
+  function viewFigure(f) {
+    var c = findCountry(f.country), era = eraOf(f);
+    var end = f.died == null ? new Date().getFullYear() : f.died;
+    var near = D.figures.filter(function (o) { return o !== f; }).map(function (o) {
+      var oEnd = o.died == null ? new Date().getFullYear() : o.died;
+      return { f: o, overlap: Math.min(end, oEnd) - Math.max(f.born, o.born) };
+    }).filter(function (x) { return x.overlap >= 20; })
+      .sort(function (a, b) { return b.overlap - a.overlap; }).slice(0, 4);
+
+    var html = '<div class="page"><p class="crumb"><a href="#/figures">' + esc(t('backToFigures')) + '</a></p>' +
+      '<header class="fig-head">' + monoHTML(f, true) + '<div><h1>' + esc(L(f.name)) + '</h1>' +
+      '<p class="meta" style="margin:0">' + esc(lifespan(f)) + '</p>' +
+      '<p class="meta" style="margin:0.25rem 0 0">' +
+      (c ? esc(t('fromCountry')) + ': <a href="#/country/' + esc(c.id) + '">' + esc(L(c.name)) + '</a>. ' : '') +
+      esc(t('fieldLabel')) + ': ' + esc(D.fields[f.field] ? L(D.fields[f.field]) : f.field) + '. ' +
+      esc(t('eraLabel')) + ': ' + esc(L(era.name)) + '.</p></div></header>' +
+      '<div class="fig-body"><p class="lead">' + esc(L(f.summary)) + '</p>' +
+      '<h2>' + esc(t('biography')) + '</h2>' + paragraphs(f.bio);
+    var ach = listOf(f.achievements);
+    if (ach.length) {
+      html += '<h2>' + esc(t('achievements')) + '</h2><ul>' + ach.map(function (a) { return '<li>' + esc(a) + '</li>'; }).join('') + '</ul>';
+    }
+    if (f.quote && L(f.quote)) {
+      html += '<h2>' + esc(t('famousQuote')) + '</h2><blockquote class="quote">' + esc(L(f.quote)) + '</blockquote>';
+    }
+    html += '</div>';
+    if (near.length) {
+      html += sectionTitle(t('contemporaries')) + '<div class="mini-grid">' + near.map(function (x) { return figCard(x.f); }).join('') + '</div>';
+    }
+    return html + '</div>';
+  }
+
+  function viewAges() {
+    var list = D.countries.slice().sort(function (a, b) { return a.founded - b.founded; });
+    var items = list.map(function (c) {
+      return '<li class="age-item"><span class="yr">' + esc(yearLabel(c.founded)) + '</span><span class="dot"></span>' +
+        '<div class="age-card frame"><h3><a href="#/country/' + esc(c.id) + '">' + esc(L(c.name)) + '</a></h3>' +
+        '<div class="big-n">' + esc(ageText(c)) + '</div>' +
+        (c.foundedNote ? '<details><summary>' + esc(t('whyDate')) + '</summary><p>' + esc(L(c.foundedNote)) + '</p></details>' : '') +
+        '</div></li>';
+    }).join('');
+    return '<div class="page"><h1>' + esc(t('agesTitle')) + '</h1><p class="lead">' + esc(t('agesLead')) + '</p>' +
+      '<p class="hint">' + esc(t('agesHint')) + '</p>' +
+      '<div class="ages-scroller" tabindex="0" role="region" aria-label="' + esc(t('agesTitle')) + '"><ol class="ages-track" style="list-style:none;margin:0;padding-inline:0">' + items + '</ol></div></div>';
+  }
+
+  function viewNotFound() {
+    return '<div class="page"><h1>' + esc(t('notFoundTitle')) + '</h1><p class="lead">' + esc(t('notFoundText')) + '</p>' +
+      '<p><a href="#/">' + esc(t('navHome')) + '</a></p></div>';
+  }
+
+  /* ---------- router ---------- */
+  function parseHash() {
+    var h = (location.hash || '').replace(/^#/, '');
+    if (h.charAt(0) !== '/') { h = '/'; }
+    return h.split('/').filter(Boolean).map(function (x) {
+      try { return decodeURIComponent(x); } catch (e) { return x; }
+    });
+  }
+
+  function route(isLangChange) {
+    var p = parseHash(), page = p[0] || '', view, title, section = '/', c, f;
+    document.body.classList.remove('has-progress');
+
+    if (page === '') { view = viewHome(); title = L(S.slogan); }
+    else if (page === 'countries' && !p[1]) { view = viewCountries(); title = t('countriesTitle'); section = '/countries'; }
+    else if (page === 'country' && (c = findCountry(p[1]))) {
+      view = viewCountry(c); title = L(c.name); section = '/countries';
+      document.body.classList.add('has-progress');
+    }
+    else if (page === 'figures' && !p[1]) { view = viewFigures(); title = t('figuresTitle'); section = '/figures'; }
+    else if (page === 'figure' && (f = findFigure(p[1]))) { view = viewFigure(f); title = L(f.name); section = '/figures'; }
+    else if (page === 'ages' && !p[1]) { view = viewAges(); title = t('agesTitle'); section = '/ages'; }
+    else { view = viewNotFound(); title = t('notFoundTitle'); }
+
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'fa' ? 'rtl' : 'ltr';
+    renderChrome(section);
+    appEl.innerHTML = view;
+    document.title = title + ' | Historium';
+    if (!isLangChange) {
+      window.scrollTo(0, 0);
+      try { appEl.focus({ preventScroll: true }); } catch (e) { /* ignore */ }
+    }
+    updateProgress();
+  }
+
+  function updateProgress() {
+    if (!document.body.classList.contains('has-progress')) { return; }
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    var r = max > 0 ? h.scrollTop / max : 0;
+    progressEl.style.transform = 'scaleX(' + Math.min(1, Math.max(0, r)) + ')';
+  }
+
+  /* ---------- events ---------- */
+  document.addEventListener('click', function (e) {
+    var target = e.target;
+    if (!target || !target.closest) { return; }
+
+    if (target.closest('#lang-btn')) {
+      lang = lang === 'fa' ? 'en' : 'fa';
+      try { localStorage.setItem('historium-lang', lang); } catch (err) { /* ignore */ }
+      route(true);
+      return;
+    }
+    var sc = target.closest('[data-scroll]');
+    if (sc) {
+      e.preventDefault();
+      var el = document.getElementById(sc.getAttribute('data-scroll'));
+      if (el) { el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' }); }
+      return;
+    }
+    if (target.closest('#random-fig')) {
+      var pool = D.figures;
+      if (pool.length) { location.hash = '#/figure/' + pool[Math.floor(Math.random() * pool.length)].id; }
+    }
+  });
+
+  document.addEventListener('change', function (e) {
+    var id = e.target && e.target.id;
+    if (id === 'f-country' || id === 'f-field') {
+      figFilter.country = document.getElementById('f-country').value;
+      figFilter.field = document.getElementById('f-field').value;
+      document.getElementById('fig-results').innerHTML = figResults();
+    }
+  });
+
+  document.addEventListener('input', function (e) {
+    if (!e.target || e.target.id !== 'q') { return; }
+    var q = norm(e.target.value.trim());
+    var cards = document.querySelectorAll('#country-grid [data-search]');
+    var shown = 0;
+    Array.prototype.forEach.call(cards, function (card) {
+      var match = !q || card.getAttribute('data-search').indexOf(q) !== -1;
+      card.hidden = !match;
+      if (match) { shown++; }
+    });
+    document.getElementById('no-results').hidden = shown !== 0;
+  });
+
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  window.addEventListener('resize', updateProgress);
+  window.addEventListener('hashchange', function () { route(false); });
+
+  route(false);
+})();
+
+</script>
+</body>
+</html>
