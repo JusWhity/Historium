@@ -120,14 +120,16 @@ export function applyRouteSEO(info: RouteSEOInfo): void {
   } else if (page === 'country' && country) {
     const cName = isFa ? country.name.fa : country.name.en;
     const cSummary = isFa ? country.summary.fa : country.summary.en;
+    const currentYear = new Date().getFullYear();
+    const dynamicAge = country.founded < 0 ? currentYear - country.founded - 1 : currentYear - country.founded;
     const foundedYear = country.founded < 0 ? `${Math.abs(country.founded)} BCE` : `${country.founded} CE`;
 
     title = isFa
       ? `تاریخ ${cName}: قدمت، خط زمانی و معرفی کامل | هیستوریوم`
       : `History of ${cName}: Timeline, Origins & Age | Historium`;
     description = isFa
-      ? `تاریخ کامل و خط زمانی کشور ${cName} (آغاز: ${foundedYear}). ${cSummary}`
-      : `Complete history and timeline of ${cName} (Founded: ${foundedYear}). ${cSummary}`;
+      ? `تاریخ کامل و خط زمانی کشور ${cName} (آغاز: ${foundedYear}، ${dynamicAge} سال قدمت). ${cSummary}`
+      : `Complete history and timeline of ${cName} (Founded: ${foundedYear}, ${dynamicAge} years old). ${cSummary}`;
 
     schemaData = {
       "@context": "https://schema.org",

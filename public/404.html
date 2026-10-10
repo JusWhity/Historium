@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Historium</title>
+    <script>
+      // Single Page Apps for GitHub Pages
+      // Redirect 404 to the root index with hash-based route
+      var pathSegmentsToKeep = 1;
+      var l = window.location;
+      var path = l.pathname.slice(1).split('/');
+      var cleanPath = path.slice(pathSegmentsToKeep).join('/');
+      var query = l.search ? l.search.slice(1) : '';
+      var hash = l.hash ? l.hash.slice(1) : '';
+      
+      var target = l.protocol + '//' + l.host + '/' + path.slice(0, pathSegmentsToKeep).join('/') + '/#/' + cleanPath + (query ? '?' + query : '') + (hash ? '#' + hash : '');
+      window.location.replace(target);
+    </script>
+  </head>
+  <body>
+    <p>Redirecting to Historium...</p>
+  </body>
+</html>
