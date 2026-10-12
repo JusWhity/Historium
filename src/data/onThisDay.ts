@@ -210,5 +210,14 @@ export const ON_THIS_DAY_EVENTS: OnThisDayEvent[] = [
     text:  { fa: "ژاپن به پایگاه آمریکا در هاوایی حمله کرد.", en: "Japan attacked the American base in Hawaii." } },
   { month: 12, day: 25, year: 1066, country: "united-kingdom",
     title: { fa: "تاج‌گذاری ویلیام فاتح", en: "The coronation of William the Conqueror" },
-    text:  { fa: "ویلیام در روز کریسمس در وست‌مینستر پادشاه انگلستان شد.", en: "William became king of England at Westminster on Christmas Day." } }
+    text:  { fa: "ویلیام در روز کریسمس در وست‌مینستر پادشاه انگلستان شد.", en: "William became king of England at Westminster on Christmas Day." } },
+  { month: 1, day: 3, year: 1868, country: "japan",
+    title: { fa: "احیای میجی", en: "The Meiji Restoration" },
+    text:  { fa: "قدرت به امپراتور بازگشت و دوران شوگون‌ها پایان یافت.", en: "Power returned to the emperor and the age of the shoguns ended." } },
+  { month: 7, day: 8, year: 1853, country: "japan",
+    title: { fa: "ورود پری به خلیج ادو", en: "Perry enters Edo Bay" },
+    text:  { fa: "ناوگان آمریکایی ژاپن را وادار به گشایش به روی تجارت کرد.", en: "An American fleet pressed Japan to open to trade." } },
+  { month: 10, day: 12, year: 1971, country: "iran",
+    title: { fa: "جشن‌های دوهزار و پانصدساله", en: "The 2,500-year celebrations" },
+    text:  { fa: "جشن‌های بزرگ در تخت جمشید آغاز شد.", en: "Grand celebrations began at Persepolis." } }
 ];

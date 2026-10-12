@@ -319,21 +319,7 @@ html[dir="rtl"] .section-title::after { background: linear-gradient(270deg, var(
   height: 100%;
   border: 1px solid rgba(42, 28, 18, 0.5);
 }
-.flag-img,
-.flag-svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border: 1px solid rgba(42, 28, 18, 0.5);
-  box-shadow: 0 1px 4px rgba(42, 28, 18, 0.15);
-  border-radius: 2px;
-}
-.flag-big .flag-svg,
-.flag-band .flag-svg {
-  width: 100%;
-  height: 100%;
-}
+.flag-img { display: block; width: 100%; height: 100%; object-fit: cover; border: 1px solid rgba(42, 28, 18, 0.5); }
 
 /* ---------- search ---------- */
 .searchbar { margin: 1.5rem 0 2rem; max-width: 460px; }
@@ -671,17 +657,4 @@ blockquote.quote {
   .site-header { position: static; }
   .scroll-sheet { margin-inline: 12px; }
   .era-nav { position: static; }
-  .country-head {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-  .country-head .flag-big {
-    width: 140px;
-    height: 94px;
-  }
-  .country-card .flag-band {
-    height: 76px;
-  }
 }

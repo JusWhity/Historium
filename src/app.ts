@@ -2,7 +2,6 @@ import { Country, Figure, Era } from './types';
 import { HISTORIUM_DATA } from './data';
 import { HISTORIUM_STRINGS, MONTH_NAMES } from './data/strings';
 import { applyRouteSEO } from './seo';
-import { getCountryFlagSvg } from './data/flags';
 
 export function initHistoriumApp(): void {
   const D = HISTORIUM_DATA;
@@ -140,10 +139,6 @@ export function initHistoriumApp(): void {
   function flagHTML(c: Country, cls: string): string {
     if (c.flagImage) {
       return '<span class="' + cls + '" aria-hidden="true"><img class="flag-img" src="' + esc(c.flagImage) + '" alt=""></span>';
-    }
-    const svg = getCountryFlagSvg(c.id);
-    if (svg) {
-      return '<span class="' + cls + '" aria-hidden="true">' + svg + '</span>';
     }
     const colors = c.flag && c.flag.length ? c.flag : ['#999999'];
     const n = colors.length, parts: string[] = [];
