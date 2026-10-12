@@ -1,19 +1,20 @@
 # Historium
 
-An interactive bilingual historical encyclopedia cataloging the world's 195 sovereign nations, their founding eras, and over 100 influential figures throughout human history.
+An interactive bilingual historical encyclopedia cataloging the world's 195 sovereign nations, their founding eras, and 150 influential figures throughout human history.
 
-Designed with an old-world parchment and ink aesthetic, Historium features full bidirectional support (Persian RTL and English LTR), historical timelines, and real-time calendar calculations.
+Designed with an old-world parchment and ink aesthetic, Historium features full bidirectional support (Persian RTL and English LTR), historical timelines, vector flags, and real-time calendar calculations.
 
 ---
 
 ## Features
 
-- **All 195 Sovereign Nations**: Detailed overviews, capitals, flags, population notes, historical origins, and chronologies for every UN member state and recognized nation.
+- **All 195 Sovereign Nations**: Detailed multi-paragraph overviews, modular historical sections (Origins, Golden Ages, Modern Identity), interactive chronologies, and verified founding notes.
+- **Accurate Vector Flags**: High-fidelity vector SVGs with authentic emblems, crosses, stars, cantons, and national palettes rendered crisply on all screen densities.
 - **Dynamic Age Calculations**: Country ages are computed in real time based on calendar year (`currentYear - foundedYear`, accounting for BCE/CE transitions). Ages advance automatically every new year without static data edits.
-- **100+ Historical Figures**: Biographies, quotes, and milestone achievements spanning antiquity, the middle ages, the renaissance, the enlightenment, the modern era, and the contemporary age.
+- **150 Important Historical Figures**: In-depth biographies, documented quotes, and milestone achievements spanning antiquity, the middle ages, the renaissance, the enlightenment, the modern era, and the 20th century.
 - **This Day in History**: Calendar-aware historical event lookup for any day of the year.
 - **Bilingual & Bidirectional (RTL / LTR)**: Built from the ground up to render seamlessly in Persian (Farsi) with Noto Naskh / Amiri typography and English with EB Garamond / IM Fell English.
-- **Client-Side Routing & SEO**: Schema.org JSON-LD structured data, dynamic OpenGraph / Twitter meta tags, and hash-based routing with fallback redirection for static hosts.
+- **Client-Side Routing & SEO**: Schema.org JSON-LD structured data, dynamic OpenGraph / Twitter meta tags, browser tab favicons, and hash-based routing with fallback redirection for static hosts.
 
 ---
 

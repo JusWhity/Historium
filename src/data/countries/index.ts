@@ -4,9 +4,9 @@ import { ASIA_COUNTRIES } from './asia';
 import { AFRICA_COUNTRIES } from './africa';
 import { AMERICAS_COUNTRIES } from './americas';
 import { OCEANIA_AND_REMAINING_COUNTRIES } from './oceaniaAndRemaining';
-import { DETAILED_HISTORIES } from './detailedHistories';
+import { enrichCountry } from './countryEnricher';
 
-// Combine all 195 countries ensuring uniqueness by id
+// Combine all 195 countries ensuring uniqueness by id and full editorial depth
 const map = new Map<string, Country>();
 
 const allCountryLists: Country[][] = [
@@ -20,13 +20,9 @@ const allCountryLists: Country[][] = [
 for (const list of allCountryLists) {
   for (const c of list) {
     if (!map.has(c.id)) {
-      map.set(c.id, c);
+      map.set(c.id, enrichCountry(c));
     }
   }
 }
 
-// Countries with a full written history (sections + long timeline) get it applied here.
-export const ALL_COUNTRIES: Country[] = Array.from(map.values()).map((c) => {
-  const detail = DETAILED_HISTORIES[c.id];
-  return detail ? { ...c, sections: detail.sections, timeline: detail.timeline } : c;
-});
+export const ALL_COUNTRIES: Country[] = Array.from(map.values());
