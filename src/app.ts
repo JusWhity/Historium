@@ -138,7 +138,7 @@ export function initHistoriumApp(): void {
 
   function flagHTML(c: Country, cls: string): string {
     if (c.flagImage) {
-      return '<span class="' + cls + '" aria-hidden="true"><img class="flag-img" src="' + esc(c.flagImage) + '" alt=""></span>';
+      return '<span class="' + cls + '" aria-hidden="true"><img class="flag-img" src="' + esc(c.flagImage) + '" alt="" loading="lazy" decoding="async"></span>';
     }
     const colors = c.flag && c.flag.length ? c.flag : ['#999999'];
     const n = colors.length, parts: string[] = [];
