@@ -5,6 +5,7 @@ import { FIGURES_EUROPE_AMERICAS } from './figuresEuropeAmericas';
 import { FIGURES_ASIA } from './figuresAsia';
 import { FIGURES_WORLD_ADDITIONAL } from './figuresWorld';
 import { FIGURES_DETAILED } from './figuresDetailed';
+import { BATCH_FIGURES } from './batches';
 
 const map = new Map<string, Figure>();
 
@@ -27,13 +28,14 @@ for (const list of lists) {
 // Detailed biographies: new figures are added; for figures that already exist the
 // biography/achievements/era come from the detailed entry, while name, summary,
 // quote and 'added' stay as they were.
-for (const d of FIGURES_DETAILED) {
+for (const d of [...FIGURES_DETAILED, ...BATCH_FIGURES]) {
   const existing = map.get(d.id);
   map.set(
     d.id,
     existing
       ? {
           ...d,
+          era: d.era ?? existing.era,
           name: existing.name,
           summary: existing.summary,
           quote: existing.quote ?? d.quote,
