@@ -49,6 +49,7 @@ export const HISTORIUM_STRINGS: Record<string, { fa: string; en: string }> = {
   factCapital: { fa: "پایتخت", en: "Capital" },
   factLanguage: { fa: "زبان", en: "Language" },
   factPopulation: { fa: "جمعیت", en: "Population" },
+  factAge: { fa: "قدمت این کشور", en: "Age of this country" },
   toc: { fa: "فهرست مطالب", en: "Contents" },
   overviewTitle: { fa: "معرفی", en: "Overview" },
   timelineTitle: { fa: "خط زمانی", en: "Timeline" },

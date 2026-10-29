@@ -311,7 +311,7 @@ export function initHistoriumApp(): void {
     if (c.gallery && c.gallery.length) { toc.push(['sec-gallery', t('galleryTitle')]); }
 
     let facts = '<div><dt>' + esc(t('factFounded')) + '</dt><dd>' + esc(yearLabel(c.founded)) + '</dd></div>' +
-      '<div><dt>' + esc(t('navAges')) + '</dt><dd>' + esc(ageText(c)) + '</dd></div>';
+      '<div><dt>' + esc(t('factAge')) + '</dt><dd>' + esc(ageText(c)) + '</dd></div>';
     if (c.facts) {
       ([['capital', 'factCapital'], ['language', 'factLanguage'], ['population', 'factPopulation']] as const).forEach(function (k) {
         if (c.facts[k[0]]) { facts += '<div><dt>' + esc(t(k[1])) + '</dt><dd>' + esc(L(c.facts[k[0]])) + '</dd></div>'; }
