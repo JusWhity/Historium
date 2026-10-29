@@ -6,6 +6,7 @@ import { FIGURES_ASIA } from './figuresAsia';
 import { FIGURES_WORLD_ADDITIONAL } from './figuresWorld';
 import { FIGURES_DETAILED } from './figuresDetailed';
 import { BATCH_FIGURES } from './batches';
+import { QUOTE_FIXES } from './quoteFixes';
 
 const map = new Map<string, Figure>();
 
@@ -36,6 +37,9 @@ for (const d of [...FIGURES_DETAILED, ...BATCH_FIGURES]) {
       ? {
           ...d,
           era: d.era ?? existing.era,
+          born: existing.born,
+          died: existing.died,
+          field: existing.field,
           name: existing.name,
           summary: existing.summary,
           quote: existing.quote ?? d.quote,
@@ -45,4 +49,7 @@ for (const d of [...FIGURES_DETAILED, ...BATCH_FIGURES]) {
   );
 }
 
-export const ALL_FIGURES: Figure[] = Array.from(map.values());
+// Corrected quotations (see quoteFixes.ts).
+export const ALL_FIGURES: Figure[] = Array.from(map.values()).map((f) =>
+  f.id in QUOTE_FIXES ? { ...f, quote: QUOTE_FIXES[f.id] } : f
+);
