@@ -66,8 +66,8 @@ export function applyRouteSEO(info: RouteSEOInfo): void {
       ? 'هیستوریوم | دانشنامه تاریخ جهان، قدمت کشورها و شخصیت‌های بزرگ'
       : 'Historium | World History Encyclopedia, Age of Countries & Historic Figures';
     description = isFa
-      ? 'سفر به تاریخ جهان با هیستوریوم: بررسی تاریخ، قدمت و خط زمانی ۱۹۵ کشور جهان و زندگی‌نامه بیش از ۱۰۰ شخصیت تأثیرگذار از باستان تا معاصر.'
-      : 'Journey through world history with Historium: Explore the timelines, ages, and origins of 195 countries and over 100 historical figures.';
+      ? 'سفر به تاریخ جهان با هیستوریوم: بررسی تاریخ، قدمت و خط زمانی ۱۹۵ کشور جهان و زندگی‌نامه بیش از ۲۰۰ شخصیت تأثیرگذار از باستان تا معاصر.'
+      : 'Journey through world history with Historium: Explore the timelines, ages, and origins of 195 countries and over 200 historical figures.';
 
     schemaData = {
       "@context": "https://schema.org",
@@ -78,19 +78,14 @@ export function applyRouteSEO(info: RouteSEOInfo): void {
           "url": baseUrl,
           "name": "Historium",
           "description": description,
-          "inLanguage": isFa ? "fa" : "en",
-          "potentialAction": {
-            "@type": "SearchAction",
-            "target": `${baseUrl}#/countries?q={search_term_string}`,
-            "query-input": "required name=search_term_string"
-          }
+          "inLanguage": isFa ? "fa" : "en"
         },
         {
           "@type": "EducationalOrganization",
           "@id": `${baseUrl}#organization`,
           "name": "Historium",
           "url": baseUrl,
-          "logo": `${baseUrl}favicon.ico`,
+          "logo": `${baseUrl}logo.png`,
           "description": description
         }
       ]
@@ -157,8 +152,8 @@ export function applyRouteSEO(info: RouteSEOInfo): void {
       ? 'شخصیت‌های مهم تاریخ جهان از باستان تا معاصر | هیستوریوم'
       : 'Important Figures in World History | Historium';
     description = isFa
-      ? 'زندگی‌نامه، دستاوردها و سخنان بیش از ۱۰۰ شخصیت برجسته تاریخ بشریت بر اساس دوره‌های تاریخی و حوزه‌های سیاست، علم، هنر و اندیشه.'
-      : 'Biographies, achievements, and wisdom of over 100 historical giants spanning science, politics, thought, and arts across eras.';
+      ? 'زندگی‌نامه، دستاوردها و سخنان بیش از ۲۰۰ شخصیت برجسته تاریخ بشریت بر اساس دوره‌های تاریخی و حوزه‌های سیاست، علم، هنر و اندیشه.'
+      : 'Biographies, achievements, and wisdom of over 200 historical giants spanning science, politics, thought, and arts across eras.';
 
     schemaData = {
       "@context": "https://schema.org",

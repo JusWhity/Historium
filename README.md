@@ -30,7 +30,7 @@ Designed with an old-world parchment and ink aesthetic, Historium features full 
 
 ### Prerequisites
 
-- Node.js 20 or higher
+- Node.js 20.19 or higher (22 is what the GitHub deployment uses)
 - npm
 
 ### Installation
